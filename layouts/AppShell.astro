@@ -1,0 +1,25 @@
+---
+import '@styles/global.css'
+import Header from '@components/Header.astro'
+import MetaHead from '@components/MetaHead.astro'
+
+const title: string = Astro.props.title
+  ? `${Astro.props.title} | unterberg.dev`
+  : 'unterberg.dev'
+
+const description = Astro.props.description || ''
+---
+
+<html lang="en" data-theme="dark" transition:animate="none">
+  <MetaHead
+    title={title}
+    description={description}
+    robots={Astro.props.robots}
+  />
+  <body class="h-dvh flex flex-col overflow-hidden">
+    <Header />
+    <main class="prose-container relative flex-1 min-h-0 overflow-y-auto">
+      <slot />
+    </main>
+  </body>
+</html>

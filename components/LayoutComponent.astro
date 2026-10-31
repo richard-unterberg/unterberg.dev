@@ -1,0 +1,24 @@
+---
+import { cva } from 'cva'
+
+const layoutClass = cva({
+  base: 'm-auto relative',
+  variants: {
+    type: {
+      full: 'w-full',
+      small: 'max-w-4xl px-3',
+      normalWithoutGutter: 'max-w-6xl px-0',
+      normal: 'max-w-6xl px-3 sm:px-5',
+    },
+  },
+  defaultVariants: {
+    type: 'normal',
+  },
+})
+
+const { type, class: className, ...attributes } = Astro.props
+---
+
+<div {...attributes} class={layoutClass({ type, class: className })}>
+  <slot />
+</div>
