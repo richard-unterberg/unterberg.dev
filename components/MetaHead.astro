@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from 'astro:transitions'
+
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString()
 ---
 
@@ -36,4 +38,5 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString()
       ? 'noindex, nofollow'
       : 'index, follow'}
   >
+  <ClientRouter />
 </head>
