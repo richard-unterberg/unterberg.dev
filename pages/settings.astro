@@ -1,0 +1,106 @@
+---
+import LayoutComponent from '@components/LayoutComponent.astro'
+import RangeLabel from '@components/RangeLabel.astro'
+import RangeSlider from '@components/RangeSlider.astro'
+import AppShell from '@layouts/AppShell.astro'
+import PixiStage from '@layouts/PixiStage.astro'
+import { PixiConfig } from '@lib/constants'
+import { getPercentMultiValue, getPercentSingleValue } from '@lib/utils'
+---
+
+<AppShell title="welcome" robots={false}>
+  <PixiStage>
+    <LayoutComponent class="mt-16">
+      <div
+        class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-6 gap-y-4"
+      >
+        <RangeLabel label="Base Scale">
+          <RangeSlider
+            initialValue={getPercentSingleValue(
+              PixiConfig.emitter.scaleModifier,
+            )}
+          />
+        </RangeLabel>
+        <RangeLabel label="Pointer Radius">
+          <RangeSlider
+            initialValue={getPercentSingleValue(
+              PixiConfig.emitter.cursorRadius,
+            )}
+          />
+        </RangeLabel>
+        <RangeLabel label="Inertia">
+          <RangeSlider
+            initialValue={getPercentSingleValue(
+              PixiConfig.emitter.pointerInertia,
+            )}
+          />
+        </RangeLabel>
+        <RangeLabel label="In Duration (range)">
+          <RangeSlider
+            initialValue={getPercentMultiValue(PixiConfig.emitter.inDuration)}
+            multi
+          />
+        </RangeLabel>
+        <RangeLabel label="Out Duration (range)">
+          <RangeSlider
+            initialValue={getPercentMultiValue(PixiConfig.emitter.outDuration)}
+            multi
+          />
+        </RangeLabel>
+        <RangeLabel label="Gravity">
+          <RangeSlider
+            initialValue={getPercentSingleValue(PixiConfig.emitter.gravity)}
+          />
+        </RangeLabel>
+        <RangeLabel label="Pixel Spread">
+          <RangeSlider
+            initialValue={getPercentMultiValue(PixiConfig.emitter.pixelSpread)}
+            multi
+          />
+        </RangeLabel>
+        <RangeLabel label="In Opacity (range)">
+          <RangeSlider
+            initialValue={getPercentMultiValue(PixiConfig.emitter.alphaIn)}
+            multi
+          />
+        </RangeLabel>
+        <RangeLabel label="In Skew">
+          <RangeSlider
+            initialValue={getPercentMultiValue(PixiConfig.emitter.skewTo)}
+            multi
+          />
+        </RangeLabel>
+        <RangeLabel label="Out Skew">
+          <RangeSlider
+            initialValue={getPercentMultiValue(PixiConfig.emitter.skewFrom)}
+            multi
+          />
+        </RangeLabel>
+        <RangeLabel label="In Scale">
+          <RangeSlider
+            initialValue={getPercentMultiValue(PixiConfig.emitter.scaleIn)}
+            multi
+          />
+        </RangeLabel>
+        <RangeLabel label="In Rotation">
+          <RangeSlider
+            initialValue={getPercentMultiValue(PixiConfig.emitter.rotationIn)}
+            multi
+          />
+        </RangeLabel>
+        <RangeLabel label="Tail Opacity">
+          <RangeSlider
+            initialValue={getPercentSingleValue(PixiConfig.emitter.tailOpacity)}
+          />
+        </RangeLabel>
+        <RangeLabel label="Pointer Miss Rate">
+          <RangeSlider
+            initialValue={getPercentSingleValue(
+              PixiConfig.emitter.pointerMissRate,
+            )}
+          />
+        </RangeLabel>
+      </div>
+    </LayoutComponent>
+  </PixiStage>
+</AppShell>

@@ -1,0 +1,8 @@
+---
+const label = Astro.props.label
+---
+
+<div class="relative prose-p:m-0 w-full">
+  <p class="text-grayLight pointer-events-none">{label}</p>
+  <slot />
+</div>

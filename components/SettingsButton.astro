@@ -1,0 +1,25 @@
+---
+import { Sparkles, X } from '@lucide/astro'
+
+const pathname = Astro.url.pathname
+
+const isSettingsOpen = pathname === '/settings/' || pathname === '/settings'
+const isStartPage = pathname === '/' || pathname === ''
+const isStartOrSettingsPage = isSettingsOpen || isStartPage
+---
+
+{isStartOrSettingsPage && (
+  <div>
+    {isSettingsOpen ? (
+      <a href="/" class="btn btn-warning btn-sm">
+        <X class="size-4" />
+        Close Settings
+      </a>
+    ) : (
+      <a href="/settings/" class="btn btn-base btn-sm">
+        <Sparkles class="size-4" />
+        Open Settings
+      </a>
+    )}
+  </div>
+)}

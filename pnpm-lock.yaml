@@ -21,6 +21,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.6.4
         version: 2.6.4
+      '@marmo/astro':
+        specifier: ^1.0.0
+        version: 1.0.0(astro@7.4.4(@types/node@26.6.6)(jiti@2.7.0)(yaml@2.9.1))
       '@tailwindcss/typography':
         specifier: ^0.5.20
         version: 0.5.20(tailwindcss@4.3.3)
@@ -544,6 +547,12 @@ packages:
     resolution: {integrity: sha512-e6HoP1W2PQm8HSQfWyo0jz4fl8rAgzbNk/to0dlMy0jpwwwmsZ8NxeX3KU8TcpISa0BL02pV9WdbjzGIsMT6LQ==}
     peerDependencies:
       astro: ^4 || ^5 || ^6 || ^7
+
+  '@marmo/astro@1.0.0':
+    resolution: {integrity: sha512-K/hYuZbxsQiHwrOa9eb1dEjKf9GNiVo5fOWETb1dy/R2iEOF6RP96ih3TzS7Ly8EymrtzBp+9HkyfWrEWCJcGA==}
+    engines: {node: '>=24'}
+    peerDependencies:
+      astro: ^7.4.4
 
   '@napi-rs/wasm-runtime@1.2.4':
     resolution: {integrity: sha512-AJxoUD2/15ESHbvpcyjU274nsAPLuOtPHCk0vKJM5pj//Fg/B1FXNWjPnXTT9PymCYYiHo4zPj0ZomXBKhoy7g==}
@@ -1879,6 +1888,9 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
 
+  tailwind-merge@3.7.0:
+    resolution: {integrity: sha512-XPPUyAc+cvspz3lHTcR/QgPfW2A0lv/xQNIjX3HGhLR+Nq2lHaLq5MtTesHn8GUr3W3DguT2KT5x3NVgRtYwmA==}
+
   tailwindcss@4.3.3:
     resolution: {integrity: sha512-gOhV3P7ufE62QDGg1zVaTgCR+EtPv92k2nIhVcVKcLmxT1sUBsQGhnZj175j+MqRt4zLF7ic+sCYjfhxMxj7YQ==}
 
@@ -2678,6 +2690,11 @@ snapshots:
   '@lucide/astro@1.66.0(astro@7.4.4(@types/node@26.6.6)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       astro: 7.4.4(@types/node@26.6.6)(jiti@2.7.0)(yaml@2.9.1)
+
+  '@marmo/astro@1.0.0(astro@7.4.4(@types/node@26.6.6)(jiti@2.7.0)(yaml@2.9.1))':
+    dependencies:
+      astro: 7.4.4(@types/node@26.6.6)(jiti@2.7.0)(yaml@2.9.1)
+      tailwind-merge: 3.7.0
 
   '@napi-rs/wasm-runtime@1.2.4(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)':
     dependencies:
@@ -3950,6 +3967,8 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.6.1
+
+  tailwind-merge@3.7.0: {}
 
   tailwindcss@4.3.3: {}
 

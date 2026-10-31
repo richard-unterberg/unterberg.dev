@@ -1,3 +1,4 @@
+import marmo from '@marmo/astro/integration'
 import tailwindcss from '@tailwindcss/vite'
 import { astroBeastiesOutput } from '@unterberg/vite-beasties-output/astro'
 import { defineConfig } from 'astro/config'
@@ -7,6 +8,7 @@ export default defineConfig({
   trailingSlash: 'always',
   srcDir: '.',
   integrations: [
+    marmo(),
     astroBeastiesOutput({
       outputDirectory: 'dist',
       include: ['dist/**/*.html'],

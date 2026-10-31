@@ -12,7 +12,8 @@
     "lint": "biome lint --write .",
     "format": "biome format --write .",
     "check:knip": "pnpm knip",
-    "verify": "pnpm format && pnpm run check:knip && pnpm run lint && pnpm run typecheck"
+    "verify": "pnpm format && pnpm run check:knip && pnpm run lint && pnpm run typecheck",
+    "oa": "npx @openagt/start"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,7 @@
     "@lucide/astro": "^1.65.0"
   },
   "devDependencies": {
+    "@marmo/astro": "^1.0.0",
     "@astrojs/check": "^0.9.12",
     "@astrojs/ts-plugin": "^1.10.12",
     "@biomejs/biome": "^2.6.4",

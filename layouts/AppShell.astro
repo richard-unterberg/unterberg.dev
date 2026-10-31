@@ -8,6 +8,7 @@ const title: string = Astro.props.title
   : 'unterberg.dev'
 
 const description = Astro.props.description || ''
+
 ---
 
 <html lang="en" data-theme="dark" transition:animate="none">
@@ -16,10 +17,8 @@ const description = Astro.props.description || ''
     description={description}
     robots={Astro.props.robots}
   />
-  <body class="h-dvh flex flex-col overflow-hidden">
+  <body>
     <Header />
-    <main class="prose-container relative flex-1 min-h-0 overflow-y-auto">
-      <slot />
-    </main>
+    <slot />
   </body>
 </html>

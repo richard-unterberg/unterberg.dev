@@ -1,4 +1,10 @@
-<div>
-  <div transition:persist="main-stage" id="stage" class="z-1 fixed inset-0" />
+---
+import Stage from '@lib/pixi/Stage.astro'
+---
+
+<div class="relative z-2 prose-container">
   <slot />
+</div>
+<div transition:persist="main-stage" id="stage" class="z-1 fixed inset-0">
+  <Stage />
 </div>

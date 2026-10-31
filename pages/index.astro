@@ -1,6 +1,23 @@
 ---
-import LayoutComponent from "@components/LayoutComponent.astro";
-import AppShell from "@layouts/AppShell.astro";
+import LayoutComponent from '@components/LayoutComponent.astro'
+import AppShell from '@layouts/AppShell.astro'
+import PixiStage from '@layouts/PixiStage.astro'
 ---
 
-<AppShell> <LayoutComponent>Henlo</LayoutComponent></AppShell>
+<AppShell title="welcome">
+  <PixiStage>
+    <LayoutComponent
+      class="prose-headings:m-0 h-dvh flex items-center justify-center text-center"
+    >
+      <div>
+        <h1 class="text-sm font-normal text-base-muted">
+          Web & Software Development
+        </h1>
+        <h2 class="text-6xl font-black">Hello</h2>
+        <p class="text-lg">
+          I'm Richard and I like to build modern websites and interfaces. ✌️
+        </p>
+      </div>
+    </LayoutComponent>
+  </PixiStage>
+</AppShell>
