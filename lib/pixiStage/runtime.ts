@@ -58,12 +58,18 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
   let budget = 24
   let ambientIn = random(0.6, 4.5)
   let pageBound = false
+  let scroller: Element | null = null
+  let scrollLeft = 0
+  let scrollTop = 0
+  const tileScrollTarget = { x: 0, y: 0 }
+  const cloudScrollTarget = { x: 0, y: 0 }
 
   function dispose() {
     if (disposed) return
     disposed = true
     gsap.ticker.remove(frame)
     listeners.abort()
+    scroller = null
     input?.dispose()
     clouds?.dispose()
     active.length = free.length = 0
@@ -81,6 +87,29 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     cellSize = Math.floor(width / divider)
     app.renderer.resize(width, height, Math.min(window.devicePixelRatio || 1, config.resolutionCap))
     resizePending = false
+  }
+  function syncScroll() {
+    if (!scroller) return
+    const left = scroller.scrollLeft
+    const top = scroller.scrollTop
+    if (left === scrollLeft && top === scrollTop) return
+    const dx = left - scrollLeft
+    const dy = top - scrollTop
+    tileScrollTarget.x += dx
+    tileScrollTarget.y += dy
+    // Apply live parallax to new scroll deltas so changing it never replays past scrolling.
+    const parallax = config.cloudParallaxOffset / 100
+    cloudScrollTarget.x += dx * parallax
+    cloudScrollTarget.y += dy * parallax
+    scrollLeft = left
+    scrollTop = top
+  }
+  function followScroll(plane: Container, target: { x: number; y: number }, lag: number, dt: number) {
+    // Exponential following stays consistent across refresh rates and continues after scrolling stops.
+    const blend = lag === 0 ? 1 : -Math.expm1((-dt * 1000) / lag)
+    const x = plane.x + (-target.x - plane.x) * blend
+    const y = plane.y + (-target.y - plane.y) * blend
+    plane.position.set(Math.abs(x + target.x) < 0.01 ? -target.x : x, Math.abs(y + target.y) < 0.01 ? -target.y : y)
   }
   function release(index: number, retire = false) {
     const tile = active[index]
@@ -102,6 +131,8 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     // Express legacy pointer displacement at a fixed 60 Hz, independent of event/refresh rate.
     const movementX = Math.max(-50, Math.min(50, vx / 60))
     const movementY = Math.max(-50, Math.min(50, vy / 60))
+    const worldX = x - layer.x
+    const worldY = y - layer.y
     for (let i = 0; i < candidates; i++) {
       const targetX = x + movementX * config.pointerInertia + random(-footprint, footprint)
       const targetY = y + movementY * config.pointerInertia + random(-footprint, footprint)
@@ -113,7 +144,8 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       const candidateZone = input.zoneAt(endX, endY)
       if (candidateZone < 0) continue
       const soft = anchorZone > 0 || candidateZone > 0
-      if (Math.random() >= config.tailMissRate) clouds.spawn(endX, endY, vx, vy, config.tailOpacity, soft)
+      if (Math.random() >= config.tailMissRate)
+        clouds.spawn(endX - clouds.container.x, endY - clouds.container.y, vx, vy, config.tailOpacity, soft)
       if (Math.random() < config.pointerMissRate || active.length >= config.bufferCount) continue
       let tile = free.pop()
       const texture = textures[Math.floor(Math.random() * textures.length)]
@@ -144,12 +176,12 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       }
       tile.sprite.texture = texture
       tile.sprite.visible = true
-      tile.sprite.position.set(x, y)
+      tile.sprite.position.set(worldX, worldY)
       tile.sprite.scale.set(0)
       tile.sprite.alpha = 0
       tile.age = 0
-      tile.x = x
-      tile.y = y
+      tile.x = worldX
+      tile.y = worldY
       tile.offsetX = endX - x
       tile.offsetY = endY - y
       const momentum = config.pointerInertia * random(0.6, 1.1)
@@ -182,8 +214,11 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       return
     }
     if (resizePending) resize()
+    syncScroll()
     if (!config.animation) return
     const dt = Math.min(elapsed, 0.05)
+    if (layer) followScroll(layer, tileScrollTarget, config.tileScrollLag, dt)
+    if (clouds) followScroll(clouds.container, cloudScrollTarget, config.cloudScrollLag, dt)
     if (elapsed > 0.2) {
       input?.reset()
       previousGeneration = -1
@@ -224,7 +259,8 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
           const x = cx + random(-12, 12),
             y = cy + random(-12, 12)
           const zone = input.zoneAt(x, y)
-          if (zone >= 0) clouds.spawn(x, y, 0, 0, random(0.2, 0.4), zone > 0, true)
+          if (zone >= 0)
+            clouds.spawn(x - clouds.container.x, y - clouds.container.y, 0, 0, random(0.2, 0.4), zone > 0, true)
         }
       }
     }
@@ -331,11 +367,19 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     },
     bindPage() {
       if (disposed) return
+      syncScroll()
+      scroller = document.scrollingElement
+      // Rebase the scroll source across routes without jumping surviving particles.
+      scrollLeft = scroller?.scrollLeft ?? 0
+      scrollTop = scroller?.scrollTop ?? 0
       input?.bindPage()
       pageBound = true
       resizePending = true
     },
     unbindPage() {
+      if (disposed) return
+      syncScroll()
+      scroller = null
       input?.unbindPage()
       pageBound = false
     },

@@ -19,15 +19,9 @@ const description = Astro.props.description || ''
   />
   <body>
     <Header />
-    <main class="relative z-2 h-dvh overflow-y-auto">
+    <main class="relative z-2">
       <slot />
     </main>
     <Stage />
   </body>
 </html>
-<style>
-body {
-  height: 100dvh;
-  overflow: hidden;
-}
-</style>
