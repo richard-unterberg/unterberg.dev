@@ -2,13 +2,13 @@
 import '@styles/global.css'
 import Header from '@components/Header.astro'
 import MetaHead from '@components/MetaHead.astro'
+import Stage from '@lib/pixiStage/Stage.astro'
 
 const title: string = Astro.props.title
   ? `${Astro.props.title} | unterberg.dev`
   : 'unterberg.dev'
 
 const description = Astro.props.description || ''
-
 ---
 
 <html lang="en" data-theme="dark" transition:animate="none">
@@ -19,6 +19,15 @@ const description = Astro.props.description || ''
   />
   <body>
     <Header />
-    <slot />
+    <main class="relative z-2 h-dvh overflow-y-auto">
+      <slot />
+    </main>
+    <Stage />
   </body>
 </html>
+<style>
+body {
+  height: 100dvh;
+  overflow: hidden;
+}
+</style>

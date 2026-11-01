@@ -2,6 +2,7 @@
 import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
+import Controls from '@lib/pixiStage/Controls.astro'
 ---
 
 <AppShell title="welcome">
@@ -18,6 +19,21 @@ import PixiStage from '@layouts/PixiStage.astro'
           I'm Richard and I like to build modern websites and interfaces. ✌️
         </p>
       </div>
+    </LayoutComponent>
+    <LayoutComponent class="space-y-8 pb-16">
+      <div class="grid gap-4 sm:grid-cols-2">
+        <section class="pixi-hitbox rounded-box border border-base-300 p-5">
+          <h2 class="text-lg font-bold">Hitbox: softer particles</h2>
+          <p>Move here for smaller, quieter sprites with less drift.</p>
+        </section>
+        <section
+          class="pixi-deadzone rounded-box border border-base-300 bg-base-100/95 p-5"
+        >
+          <h2 class="text-lg font-bold">Deadzone: no new particles</h2>
+          <p>Pointer and autoplay emissions stop inside this area.</p>
+        </section>
+      </div>
+      <Controls id="home-pixi-settings" />
     </LayoutComponent>
   </PixiStage>
 </AppShell>

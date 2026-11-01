@@ -1,0 +1,205 @@
+---
+import { PixiConfig } from './config'
+
+interface Props {
+  id?: string
+}
+const { id = 'pixi-settings' } = Astro.props
+---
+
+<section
+  data-pixi-controls
+  class="pixi-deadzone not-prose space-y-6 rounded-box border border-base-300 bg-base-100/95 p-5"
+  aria-labelledby={`${id}-heading`}
+>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <h2 id={`${id}-heading`} class="text-xl font-bold">Emitter settings</h2>
+    <button type="button" data-pixi-reset class="btn btn-sm">Reset</button>
+  </div>
+  <div class="flex flex-wrap gap-6">
+    <label class="flex items-center gap-2">
+      <input
+        type="checkbox"
+        data-pixi-key="animation"
+        checked
+        class="checkbox checkbox-sm"
+      >
+      Animation
+    </label>
+    <label class="flex items-center gap-2">
+      <input
+        type="checkbox"
+        data-pixi-key="autoplay"
+        class="checkbox checkbox-sm"
+      >
+      Autoplay (also with reduced motion)
+    </label>
+  </div>
+  <div class="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4 lg:grid-cols-5">
+    {Object.entries(PixiConfig).map(([key, setting]) => {
+      const multi = Array.isArray(setting.value)
+      const values = Array.isArray(setting.value)
+        ? setting.value
+        : [setting.value]
+      const percent = (value: number) =>
+        ((value - setting.min) / (setting.max - setting.min)) * 100
+      const left = multi ? percent(values[0]) : 0
+      const right = percent(values[values.length - 1])
+      return (
+        <fieldset class="relative min-w-0 w-full">
+          <legend class="mb-1 w-full text-sm text-base-muted">
+            {setting.label}
+          </legend>
+          <div class="range-slider">
+            <div class="slider" data-pixi-slider>
+              <div class="slider__track" aria-hidden="true" />
+              <svg
+                class="slider__range"
+                width="100%"
+                height="7"
+                aria-hidden="true"
+              >
+                <rect
+                  data-pixi-fill
+                  x={`${left}%`}
+                  width={`${right - left}%`}
+                  height="7"
+                  rx="2"
+                />
+              </svg>
+              {values.map((value, bound) => (
+                <input
+                  id={`${id}-${key}-${bound}`}
+                  class="thumb"
+                  type="range"
+                  data-pixi-key={key}
+                  data-pixi-bound={bound}
+                  data-thumb={multi ? (bound === 0 ? 'min' : 'max') : 'single'}
+                  value={value}
+                  min={setting.min}
+                  max={setting.max}
+                  step={setting.step}
+                  aria-label={`${setting.label}${multi ? (bound === 0 ? ' (minimum)' : ' (maximum)') : ''}`}
+                />
+              ))}
+            </div>
+          </div>
+          <output
+            data-pixi-value={key}
+            for={values.map((_, bound) => `${id}-${key}-${bound}`).join(' ')}
+            class="block font-mono text-xs text-base-muted"
+          >
+            {values.join(' – ')}
+            {setting.unit ? ` ${setting.unit}` : ''}
+          </output>
+        </fieldset>
+      )
+    })}
+  </div>
+</section>
+
+<style>
+.range-slider {
+  display: inline-block;
+  padding-block: 6px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  height: 7px;
+  cursor: pointer;
+}
+
+.slider__track {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: var(--color-base-300);
+}
+
+.slider__track:hover {
+  background: var(--color-base-muted);
+}
+
+.slider__range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.slider__range rect {
+  fill: var(--color-warning);
+  pointer-events: auto;
+}
+
+.slider__range rect:hover {
+  fill: var(--color-amber-600);
+}
+
+.thumb {
+  appearance: none;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  left: -8px;
+  z-index: 1;
+  width: calc(100% + 16px);
+  height: 24px;
+  margin: 0;
+  transform: translateY(-50%);
+  background: transparent;
+}
+
+.thumb:focus-visible {
+  z-index: 2;
+  outline: none;
+}
+
+.thumb::-webkit-slider-runnable-track {
+  height: 7px;
+  background: transparent;
+}
+
+.thumb::-moz-range-track {
+  height: 7px;
+  background: transparent;
+}
+
+.thumb::-webkit-slider-thumb {
+  appearance: none;
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  margin-top: -4.5px;
+  border: 2px solid var(--color-base-100);
+  border-radius: 50%;
+  background: var(--color-warning);
+  cursor: grab;
+}
+
+.thumb::-moz-range-thumb {
+  box-sizing: border-box;
+  pointer-events: auto;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-base-100);
+  border-radius: 50%;
+  background: var(--color-warning);
+  cursor: grab;
+}
+
+.thumb:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.thumb:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+</style>
