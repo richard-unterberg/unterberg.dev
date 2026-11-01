@@ -2,10 +2,9 @@ import type { PathDefinition, PlayOptions } from './pathPlayer'
 
 type Range = [number, number]
 export type PageScene = {
-  mode?: 'ellipse' | 'comet'
   paths?: Record<string, PathDefinition>
   play?: PlayOptions & { name: string }
-  comet?: { interval?: Range; duration?: Range; curvature?: Range }
+  comet?: { curvature?: Range }
 }
 
 export const pick = ([low, high]: Range) => low + Math.random() * (high - low)
@@ -15,8 +14,6 @@ const range = (value: Range | undefined, fallback: Range, min: number, max: numb
   return [sorted[0], sorted[1]]
 }
 export const cometOptions = (scene: PageScene) => ({
-  interval: range(scene.comet?.interval, [2, 20], 0, 3600),
-  duration: range(scene.comet?.duration, [2, 5], 0.1, 120),
   curvature: range(scene.comet?.curvature, [0.06, 0.18], 0, 0.25),
 })
 

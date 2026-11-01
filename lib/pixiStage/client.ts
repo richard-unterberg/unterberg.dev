@@ -10,12 +10,23 @@ let disposeControls: (() => void) | undefined
 let boundMain: Element | null = null
 let swapping = false
 let autoplayOverride = false
+let cometOverride = false
+
+const bindStageControls = () => {
+  disposeControls?.()
+  if (!stage) return
+  const current = stage
+  disposeControls = bindControls(current.config, (next) => {
+    if (next.autoplay !== current.config.autoplay) autoplayOverride = true
+    if (next.comets !== current.config.comets) cometOverride = true
+    current.update(next)
+  })
+}
 
 const bindPage = () => {
   if (!stage || swapping || lifetime.signal.aborted) return
   const main = document.querySelector('main')
   if (main === boundMain) return
-  disposeControls?.()
   const definition = main?.querySelector<HTMLElement>('[data-pixi-scene]')?.dataset.pixiScene
   let scene: PageScene = {}
   if (definition) {
@@ -26,11 +37,7 @@ const bindPage = () => {
     }
   }
   stage.bindPage(scene)
-  const current = stage
-  disposeControls = bindControls(current.config, (next) => {
-    if (next.autoplay !== current.config.autoplay) autoplayOverride = true
-    current.update(next)
-  })
+  bindStageControls()
   boundMain = main
 }
 const start = async () => {
@@ -51,7 +58,7 @@ const start = async () => {
       return
     }
     stage = current
-    current.update({ ...current.config, autoplay: !motion.matches })
+    current.update({ ...current.config, autoplay: !motion.matches, comets: !motion.matches })
     bindPage()
   })()
     .catch((error) => {
@@ -91,10 +98,13 @@ document.addEventListener(
 motion.addEventListener(
   'change',
   () => {
-    if (!stage || autoplayOverride) return
-    stage.update({ ...stage.config, autoplay: !motion.matches })
-    boundMain = null
-    bindPage()
+    if (!stage) return
+    stage.update({
+      ...stage.config,
+      autoplay: autoplayOverride ? stage.config.autoplay : !motion.matches,
+      comets: cometOverride ? stage.config.comets : !motion.matches,
+    })
+    bindStageControls()
   },
   { signal: lifetime.signal },
 )

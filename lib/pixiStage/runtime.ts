@@ -1,9 +1,10 @@
 import gsap from 'gsap'
 import { Application, Assets, Container, Sprite, type Spritesheet, type Texture } from 'pixi.js'
 import { createClouds } from './clouds'
+import { createComets } from './comets'
 import { createConfig, normalizeConfig, type StageConfig } from './config'
 import { createInput } from './input'
-import type { PlayOptions } from './pathPlayer'
+import type { MotionSample, PlayOptions } from './pathPlayer'
 import type { PageScene } from './scene'
 
 type Tile = {
@@ -26,6 +27,8 @@ type Tile = {
   skewTo: number
   rotation: number
 }
+type EmissionTrail = { generation: number; x: number; y: number; remainder: number }
+const createTrail = (): EmissionTrail => ({ generation: -1, x: 0, y: 0, remainder: 0 })
 const random = (low: number, high: number) => low + Math.random() * (high - low)
 const pick = (range: [number, number]) => random(range[0], range[1])
 const clamp01 = (value: number) => Math.max(0, Math.min(1, value))
@@ -44,6 +47,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
   const free: Tile[] = []
   let textures: Texture[] = []
   let input: ReturnType<typeof createInput> | undefined
+  const comets = createComets(config)
   let clouds: ReturnType<typeof createClouds> | undefined
   let layer: Container | undefined
   let allocated = 0
@@ -53,12 +57,10 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
   let cellSize = 24
   let resizePending = true
   let lastFrame = 0
-  let previousGeneration = -1
-  let previousX = 0
-  let previousY = 0
-  let spacingRemainder = 0
+  const pointerTrail = createTrail()
+  const cometTrail = createTrail()
   let budget = 24
-  let ambientIn = random(0.6, 4.5)
+  let ambientIn = 60 / pick(config.cloudSpawnRate)
   let pageBound = false
   let scroller: Element | null = null
   let scrollLeft = 0
@@ -73,6 +75,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     listeners.abort()
     scroller = null
     input?.dispose()
+    comets.unbindPage()
     clouds?.dispose()
     active.length = free.length = 0
     if (app.renderer) app.destroy({ removeView: true }, { children: true })
@@ -89,6 +92,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     cellSize = Math.floor(width / divider)
     app.renderer.resize(width, height, Math.min(window.devicePixelRatio || 1, config.resolutionCap))
     input?.resize(width, height)
+    comets.resize(width, height)
     resizePending = false
   }
   function syncScroll() {
@@ -206,6 +210,39 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       active.push(tile)
     }
   }
+  function resetTrails() {
+    pointerTrail.generation = cometTrail.generation = -1
+    pointerTrail.remainder = cometTrail.remainder = 0
+  }
+  function emit(sample: MotionSample | null | undefined, trail: EmissionTrail, allowance: number) {
+    if (!sample) {
+      trail.generation = -1
+      return
+    }
+    if (sample.generation !== trail.generation) {
+      trail.remainder = 0
+      trail.x = sample.x
+      trail.y = sample.y
+    }
+    trail.generation = sample.generation
+    const dx = sample.x - trail.x
+    const dy = sample.y - trail.y
+    const distance = sample.travel?.distance ?? Math.hypot(dx, dy)
+    const spacing = 8
+    const count = Math.floor((distance + trail.remainder) / spacing)
+    const permitted = Math.min(count, allowance, 24)
+    for (let i = 0; i < permitted; i++) {
+      // Spread capped work over the segment and discard excess; never replay it.
+      const step = count <= permitted ? (spacing - trail.remainder + i * spacing) / distance : (i + 1) / permitted
+      const point = sample.travel?.at(step)
+      if (point) spawn(point.x, point.y, point.vx, point.vy)
+      else spawn(trail.x + dx * step, trail.y + dy * step, sample.vx, sample.vy)
+    }
+    budget -= permitted
+    trail.remainder = (distance + trail.remainder) % spacing
+    trail.x = sample.x
+    trail.y = sample.y
+  }
   function frame() {
     if (disposed) return
     const now = performance.now()
@@ -213,7 +250,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     lastFrame = now
     if (document.hidden || !host.isConnected) {
       lastFrame = 0
-      previousGeneration = -1
+      resetTrails()
       return
     }
     if (resizePending) resize()
@@ -224,40 +261,19 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     if (clouds) followScroll(clouds.container, cloudScrollTarget, config.cloudScrollLag, dt)
     if (elapsed > 0.2) {
       input?.reset()
-      previousGeneration = -1
+      resetTrails()
       budget = 0
     }
     budget = Math.min(24, budget + dt * 180)
-    const sample = input?.update(now, dt, width, height)
-    if (sample) {
-      if (sample.generation !== previousGeneration) {
-        spacingRemainder = 0
-        previousX = sample.x
-        previousY = sample.y
-      }
-      previousGeneration = sample.generation
-      const dx = sample.x - previousX
-      const dy = sample.y - previousY
-      const distance = sample.travel?.distance ?? Math.hypot(dx, dy)
-      const spacing = 8
-      const count = Math.floor((distance + spacingRemainder) / spacing)
-      const permitted = Math.min(count, Math.floor(budget), 24)
-      for (let i = 0; i < permitted; i++) {
-        // Spread capped work over the segment and discard excess; never replay it.
-        const step = count <= permitted ? (spacing - spacingRemainder + i * spacing) / distance : (i + 1) / permitted
-        const point = sample.travel?.at(step)
-        if (point) spawn(point.x, point.y, point.vx, point.vy)
-        else spawn(previousX + dx * step, previousY + dy * step, sample.vx, sample.vy)
-      }
-      budget -= permitted
-      spacingRemainder = (distance + spacingRemainder) % spacing
-      previousX = sample.x
-      previousY = sample.y
-    } else previousGeneration = -1
+    const pointerSample = input?.update(now, dt, width, height)
+    const cometSample = comets.update(dt)
+    // Share the existing frame budget so pointer movement cannot starve a comet's trail.
+    emit(pointerSample, pointerTrail, Math.floor(cometSample ? budget / 2 : budget))
+    emit(cometSample, cometTrail, Math.floor(budget))
     if (pageBound && config.autoplay) {
       ambientIn -= dt
       if (ambientIn <= 0 && input && clouds) {
-        ambientIn = random(0.6, 4.5)
+        ambientIn = 60 / pick(config.cloudSpawnRate)
         const cx = random(0, width),
           cy = random(0, height)
         for (let i = 0, count = Math.floor(random(1, 8)); i < count; i++) {
@@ -334,8 +350,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       'visibilitychange',
       () => {
         lastFrame = 0
-        previousGeneration = -1
-        spacingRemainder = 0
+        resetTrails()
         budget = 0
       },
       { signal: listeners.signal },
@@ -351,19 +366,18 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     update(next: StageConfig) {
       if (disposed) return
       const normalized = normalizeConfig(next)
-      if (
-        normalized.autoplay !== config.autoplay ||
-        normalized.autoplayMode !== config.autoplayMode ||
-        normalized.orbitSize !== config.orbitSize
-      )
-        input?.reset()
+      if (normalized.autoplay !== config.autoplay || normalized.orbitSize !== config.orbitSize) input?.reset()
       if (normalized.animation !== config.animation) {
         input?.pause()
         lastFrame = 0
-        previousGeneration = -1
-        spacingRemainder = 0
+        resetTrails()
         budget = 0
       }
+      if (normalized.comets !== config.comets) comets.reset()
+      else if (normalized.cometSpawnRate.some((value, index) => value !== config.cometSpawnRate[index]))
+        comets.reschedule()
+      if (normalized.cloudSpawnRate.some((value, index) => value !== config.cloudSpawnRate[index]))
+        ambientIn = 60 / pick(normalized.cloudSpawnRate)
       if (normalized.resolutionCap !== config.resolutionCap) resizePending = true
       Object.assign(config, normalized)
       while (active.length > config.bufferCount) release(active.length - 1, true)
@@ -387,8 +401,8 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       // Rebase the scroll source across routes without jumping surviving particles.
       scrollLeft = scroller?.scrollLeft ?? 0
       scrollTop = scroller?.scrollTop ?? 0
-      config.autoplayMode = scene.mode === 'comet' ? 'comet' : 'ellipse'
       input?.bindPage(scene)
+      comets.bindPage(scene)
       if (scene.play) input?.playPath(scene.play.name, scene.play)
       pageBound = true
       resizePending = true
@@ -398,6 +412,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       syncScroll()
       scroller = null
       input?.unbindPage()
+      comets.unbindPage()
       pageBound = false
     },
     dispose,

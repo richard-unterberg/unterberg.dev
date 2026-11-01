@@ -88,10 +88,7 @@ export const bindControls = (config: StageConfig, update: (next: StageConfig) =>
     root.querySelector('[data-pixi-reset]')?.addEventListener(
       'click',
       () => {
-        apply({
-          ...createConfig(matchMedia('(prefers-reduced-motion: reduce)').matches),
-          autoplayMode: config.autoplayMode,
-        })
+        apply(createConfig(matchMedia('(prefers-reduced-motion: reduce)').matches))
       },
       { signal: listeners.signal },
     )

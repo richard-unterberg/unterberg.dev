@@ -10,12 +10,13 @@ I had this cool effect in mind, saw on a flash website years ago. It was a spawn
 
 ## Will change all the time
 
-## Pixi paths and autoplay
+## Pixi paths, autoplay, and comets
 
 `pages/index.astro` defines a typed `PageScene` and passes it to
 `layouts/PixiStage.astro`. The persistent client reads that page's configuration
-on each Astro binding. The home page selects comet mode; settings can select
-ellipse or comet without changing the particle styling controls.
+on each Astro binding. Pointer effects, the idle autoplay ellipse, and autonomous
+comets have independent motion sources and share the particle styling controls.
+Comets keep flying and spawning while the pointer moves and when autoplay is off.
 
 Named paths use SVG `d` strings and a `[left, top, width, height]` viewBox. Each
 axis stretches to the viewport in CSS pixels. `lib/pixiStage/pathPlayer.ts`
@@ -31,55 +32,73 @@ play: { name: 'curveA', duration: 2, ease: 'none' },
 
 The runtime returned by `createStage` also exposes
 `stage.playPath('curveA', { duration: 2 })`, returning whether playback started.
-Durations are seconds. The player itself exposes `setPaths`, `resize`,
+Durations are seconds; playback also accepts `{ speed: 200 }` in CSS pixels per
+second, measured along the final scaled curve. The player itself exposes `setPaths`, `resize`,
 `playPath`, `update(dtSeconds)`, and `cancel` for reuse. Feed `update` from the
 owning stage ticker. Missing, unsupported, malformed, or zero-length paths
 fail safely. SVG move commands reset continuity; no bridge is emitted between
 subpaths. Resize cancels an affected flight and invalidates measurements.
 
-Comet options are authored alongside the paths:
+Comet curvature is authored alongside the paths:
 
 ```ts
 comet: {
-  interval: [2, 20],    // seconds between starts, sampled at launch
-  duration: [2, 5],    // independent seconds per flight
   curvature: [0.06, 0.18], // bow / shorter viewport dimension
 },
 ```
 
-The first launch follows a fresh random wait. Each launch samples its next
-start-to-start interval. Flights never overlap: when duration exceeds that
-interval, the next flight starts after completion. Endpoints sit 32 CSS pixels
-outside distinct edges, away from corners; adjacent-edge curves bow inward.
-Pointer movement cancels a flight. After the normal idle delay, comet mode
-samples a fresh wait. Animation pause and hidden tabs freeze playback and the
-wait clock; autoplay off, resize, route unbinding, and disposal cancel playback.
-Autoplay remains off under reduced motion until explicitly enabled in settings.
+Settings provide two-handle sliders for **Comet spawn rate** (default 10–50/min)
+and **Comet speed** (default 600–1500 px/s). Each launch samples its speed and the
+next start-to-start interval from those ranges. The first launch follows a fresh
+random wait. Changing spawn rate resamples the wait without cancelling the active
+flight; speed changes apply to the next flight. Flights never overlap: when a
+flight takes longer than its launch interval, the next starts after completion.
+Endpoints sit 32 CSS pixels outside distinct edges, away from corners;
+adjacent-edge curves bow inward.
 
-`input.ts` owns source selection and scheduling; `scene.ts` owns typed scene
-options and random paths; `runtime.ts` samples the curve through the existing
-emitter (180 positions/s, 8 px spacing, at most 24 per frame). Scroll-plane
+The independent Comets checkbox enables or disables comets. Animation pause and
+hidden tabs freeze playback and the wait clock; resize, route unbinding, disposal,
+and disabling Comets cancel playback. Reduced motion initially disables both
+Autoplay and Comets; either can be explicitly enabled independently in settings.
+Settings survive Astro route changes for the current page session.
+
+**Cloud spawn rate** controls the random background cloud groups emitted during
+Autoplay, using a two-handle range of 1–120 groups/min (default 15–100). Each group
+samples its next interval from the selected rates. Adjusting the range resamples
+the current wait immediately; Reset restores its defaults. Cloud trails along
+pointer, autoplay, and comet motion still use Tail opacity and Tail miss rate.
+
+`input.ts` owns pointer/autoplay selection and named paths; `comets.ts` owns the
+independent comet player and launch clock; `scene.ts` owns typed scene options
+and random paths. `runtime.ts` keeps separate emission continuity for each source
+and shares the existing budget (180 positions/s, 8 px spacing, at most 24 per
+frame), reserving comet capacity while the pointer is active. Scroll-plane
 conversion stays in the emitter. `zones.ts` separates membership discovery from
 bounds invalidation and ignores unrelated settings output/fill/ARIA updates.
 Resize, scroll, font, layout, and zone membership changes still update bounds.
 
-Manual browser smoke checklist (visual acceptance awaits the user's result):
+Run `pnpm test` for the motion/scheduling regressions, `pnpm verify` for repository
+checks, and `pnpm build` for the production build.
+
+Manual browser smoke checklist:
 
 - Leave the home page idle: look for varied, gently bowed crossings from one
   edge to a different edge, with no visible cursor/stroke and no bridges between
-  flights. Temporarily set `interval: [0.2, 0.2]`, `duration: [2, 2]` to check
-  that a longer flight completes before another starts.
+  flights. Set spawn rate to 60–60/min and speed to 50–50 px/s to check that a
+  longer flight completes before another starts.
 - Add the `play` example above to try `curveA`. Try a fast duration and a path
   with two distant `M` subpaths: trails should follow curves, stay bounded, and
   never join the subpaths. Restore the demo configuration after trying it.
-- Move the pointer during a comet: pointer effects should take over immediately,
-  then a fresh wait should follow idle. Check hitboxes, deadzones, and scrolling.
-  Select ellipse and idle near each corner: the whole orbit should remain curved.
+- Move the pointer during a comet: both trails should continue independently,
+  without bridges between them. Turn Autoplay off: comets should keep spawning.
+  Check hitboxes, deadzones, and scrolling. With Autoplay on, idle near each
+  corner: the whole ellipse should remain curved alongside the comets.
 - Toggle animation/autoplay; hide and restore the tab; resize during a flight.
-  Check for stale trails, catch-up bursts, or delayed launches after cancellation.
+  Toggle Comets separately and drag both handles on each new slider. Check for
+  stale trails, catch-up bursts, or delayed launches after cancellation.
 - Navigate home → settings → home repeatedly: retain one canvas and one stage
-  ticker callback, with the new page's scene. Check reduced motion with autoplay
-  initially off, then explicitly enable it through the existing checkbox.
+  ticker callback, with the new page's scene and retained slider values. Check
+  reduced motion with Autoplay and Comets initially off, then enable each separately.
 - In a performance recording, drag settings sliders: output/fill changes should
   avoid zone queries and bounds reads. Add/remove a zone or alter its class/data
   attributes; move layout, scroll, or resize: bounds should still refresh.

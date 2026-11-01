@@ -8,7 +8,7 @@ export type PathDefinition = {
   // Stretched to the viewport in CSS pixels; measured AFTER scaling, including nonuniform scaling.
   viewBox: [number, number, number, number]
 }
-export type PlayOptions = { duration: number; ease?: string } // duration is in seconds
+export type PlayOptions = { ease?: string } & ({ duration: number } | { speed: number }) // seconds or CSS px/s
 type Point = { x: number; y: number; vx: number; vy: number }
 export type MotionSample = Point & {
   generation: number
@@ -97,10 +97,12 @@ export const createPathPlayer = () => {
   }
   const start = (geometry: Geometry | null, options: PlayOptions) => {
     cancel()
-    if (!geometry || !Number.isFinite(options.duration) || options.duration <= 0) return false
+    if (!geometry) return false
+    const duration = 'speed' in options ? geometry.length / options.speed : options.duration
+    if (!Number.isFinite(duration) || duration <= 0) return false
     flight = {
       geometry,
-      duration: options.duration,
+      duration,
       elapsed: 0,
       distance: 0,
       part: 0,

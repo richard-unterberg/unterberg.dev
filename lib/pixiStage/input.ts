@@ -1,6 +1,6 @@
 import type { StageConfig } from './config'
 import { createPathPlayer, type MotionSample, type PlayOptions } from './pathPlayer'
-import { cometOptions, cometPath, type PageScene, pick } from './scene'
+import type { PageScene } from './scene'
 import { createZones } from './zones'
 
 export const createInput = (config: StageConfig) => {
@@ -10,21 +10,17 @@ export const createInput = (config: StageConfig) => {
   const sample: MotionSample = { x: 0, y: 0, vx: 0, vy: 0, generation: 0 }
   const player = createPathPlayer()
   const zones = createZones()
-  let scene: PageScene = {}
-  let options = cometOptions(scene)
   let page = false
   let consumed = 0
   let sampledAt = 0
   let source = ''
   let pathGeneration = -1
-  let wait: number | undefined
   let angle = 0
   let centerX = 0
   let centerY = 0
 
   const cancel = () => {
     player.cancel()
-    wait = undefined
   }
   const reset = () => {
     cancel()
@@ -33,7 +29,7 @@ export const createInput = (config: StageConfig) => {
     pointer.time = -Infinity
     sample.generation++
   }
-  // Freeze playback and its launch clock while the ticker is paused; discard emission continuity.
+  // Freeze playback while the ticker is paused; discard emission continuity.
   const pause = () => {
     consumed = pointer.version
     pointer.present = false
@@ -95,9 +91,7 @@ export const createInput = (config: StageConfig) => {
   return {
     bindPage(next: PageScene = {}) {
       unbindPage()
-      scene = next
-      options = cometOptions(scene)
-      player.setPaths(scene.paths ?? {})
+      player.setPaths(next.paths ?? {})
       zones.bind()
       page = true
     },
@@ -116,7 +110,6 @@ export const createInput = (config: StageConfig) => {
         (pointer.present && performance.now() - pointer.time < config.idleDelay)
       )
         return false
-      wait = undefined
       const started = player.playPath(name, playback)
       source = started ? 'path' : ''
       sample.generation++
@@ -133,7 +126,7 @@ export const createInput = (config: StageConfig) => {
           : config.autoplay
             ? player.playing && source === 'path'
               ? 'path'
-              : config.autoplayMode
+              : 'ellipse'
             : ''
       if (!next) {
         if (source) reset()
@@ -150,17 +143,7 @@ export const createInput = (config: StageConfig) => {
         centerX = Math.max(rx, Math.min(width - rx, pointer.seen ? pointer.x - rx : width / 2))
         centerY = Math.max(ry, Math.min(height - ry, pointer.seen ? pointer.y : height / 2))
       }
-      if (next === 'comet' || next === 'path') {
-        if (next === 'comet') {
-          if (wait === undefined) wait = pick(options.interval)
-          else wait -= dt
-          if (!player.playing && wait <= 0) {
-            player.play(cometPath(width, height, options.curvature), { duration: pick(options.duration) })
-            // Sample at launch: start-to-start, but do not launch again until this player completes.
-            wait = pick(options.interval)
-            dt = 0
-          }
-        }
+      if (next === 'path') {
         const point = player.update(dt)
         if (!point) return null
         if (point.generation !== pathGeneration) {

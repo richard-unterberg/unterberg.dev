@@ -6,7 +6,6 @@ import Controls from '@lib/pixiStage/Controls.astro'
 import type { PageScene } from '@lib/pixiStage/scene'
 
 const scene = {
-  mode: 'comet',
   paths: {
     curveA: {
       d: 'M-40,200 C240,40 760,560 1040,400',
@@ -14,8 +13,6 @@ const scene = {
     },
   },
   comet: {
-    interval: [2, 20], // seconds, start-to-start; flights never overlap
-    duration: [2, 5], // seconds per flight, independent of launch interval
     curvature: [0.06, 0.18], // bow as a fraction of the shorter viewport dimension
   },
 } satisfies PageScene
@@ -46,7 +43,7 @@ const scene = {
           class="pixi-deadzone rounded-box border border-base-300 bg-base-100/95 p-5"
         >
           <h2 class="text-lg font-bold">Deadzone: no new particles</h2>
-          <p>Pointer and autoplay emissions stop inside this area.</p>
+          <p>Pointer, autoplay, and comet emissions stop inside this area.</p>
         </section>
       </div>
       <Controls id="home-pixi-settings" />
