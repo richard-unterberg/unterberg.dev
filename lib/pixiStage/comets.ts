@@ -2,7 +2,7 @@ import type { StageConfig } from './config'
 import { createPathPlayer } from './pathPlayer'
 import { cometOptions, cometPath, type PageScene, pick } from './scene'
 
-// A separate player and launch clock let comets run alongside pointer and autoplay emissions.
+// The launch clock runs only during idle autoplay; activity cancels the flight and its wait.
 export const createComets = (config: StageConfig) => {
   const player = createPathPlayer()
   let options = cometOptions({})
@@ -34,8 +34,12 @@ export const createComets = (config: StageConfig) => {
     },
     reset,
     reschedule,
-    update(dt: number) {
-      if (!bound || !config.animation || !config.comets || width <= 0 || height <= 0) return null
+    update(dt: number, idle: boolean) {
+      if (!bound || !config.autoplay || !config.comets || !idle) {
+        if (player.playing || wait !== undefined) reset()
+        return null
+      }
+      if (!config.animation || width <= 0 || height <= 0) return null
       if (wait === undefined) wait = 60 / pick(config.cometSpawnRate)
       else wait -= dt
       if (!player.playing && wait <= 0) {

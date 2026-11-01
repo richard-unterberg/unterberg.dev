@@ -14,9 +14,11 @@ I had this cool effect in mind, saw on a flash website years ago. It was a spawn
 
 `pages/index.astro` defines a typed `PageScene` and passes it to
 `layouts/PixiStage.astro`. The persistent client reads that page's configuration
-on each Astro binding. Pointer effects, the idle autoplay ellipse, and autonomous
-comets have independent motion sources and share the particle styling controls.
-Comets keep flying and spawning while the pointer moves and when autoplay is off.
+on each Astro binding. Pointer effects, the idle autoplay ellipse, and comets
+share the particle styling controls. Comets start only during idle autoplay,
+after the configured idle delay and a fresh random spawn wait. Pointer movement
+immediately interrupts a comet and discards its launch clock. Once idle again,
+the next comet starts after a newly sampled wait. Autoplay off also cancels comets.
 
 Named paths use SVG `d` strings and a `[left, top, width, height]` viewBox. Each
 axis stretches to the viewport in CSS pixels. `lib/pixiStage/pathPlayer.ts`
@@ -56,10 +58,11 @@ flight takes longer than its launch interval, the next starts after completion.
 Endpoints sit 32 CSS pixels outside distinct edges, away from corners;
 adjacent-edge curves bow inward.
 
-The independent Comets checkbox enables or disables comets. Animation pause and
-hidden tabs freeze playback and the wait clock; resize, route unbinding, disposal,
-and disabling Comets cancel playback. Reduced motion initially disables both
-Autoplay and Comets; either can be explicitly enabled independently in settings.
+The Comets during idle autoplay checkbox enables or disables comets within
+Autoplay. Animation pause and hidden tabs freeze playback and the wait clock;
+resize, route unbinding, disposal, and disabling Comets or Autoplay cancel playback.
+Reduced motion initially disables both Autoplay and Comets; enable both in
+settings to allow idle comets.
 Settings survive Astro route changes for the current page session.
 
 **Cloud spawn rate** controls the random background cloud groups emitted during
@@ -69,10 +72,10 @@ the current wait immediately; Reset restores its defaults. Cloud trails along
 pointer, autoplay, and comet motion still use Tail opacity and Tail miss rate.
 
 `input.ts` owns pointer/autoplay selection and named paths; `comets.ts` owns the
-independent comet player and launch clock; `scene.ts` owns typed scene options
+comet player and idle launch clock; `scene.ts` owns typed scene options
 and random paths. `runtime.ts` keeps separate emission continuity for each source
 and shares the existing budget (180 positions/s, 8 px spacing, at most 24 per
-frame), reserving comet capacity while the pointer is active. Scroll-plane
+frame), sharing capacity between the idle ellipse and comets. Scroll-plane
 conversion stays in the emitter. `zones.ts` separates membership discovery from
 bounds invalidation and ignores unrelated settings output/fill/ARIA updates.
 Resize, scroll, font, layout, and zone membership changes still update bounds.
@@ -89,8 +92,10 @@ Manual browser smoke checklist:
 - Add the `play` example above to try `curveA`. Try a fast duration and a path
   with two distant `M` subpaths: trails should follow curves, stay bounded, and
   never join the subpaths. Restore the demo configuration after trying it.
-- Move the pointer during a comet: both trails should continue independently,
-  without bridges between them. Turn Autoplay off: comets should keep spawning.
+- Move the pointer during a comet: new comet emissions should stop immediately
+  while the existing trail fades. Keep moving: no new comets should launch.
+  Stop moving: the idle delay and a fresh spawn wait should precede the next flight.
+  Turn Autoplay off: comets should stop and remain off.
   Check hitboxes, deadzones, and scrolling. With Autoplay on, idle near each
   corner: the whole ellipse should remain curved alongside the comets.
 - Toggle animation/autoplay; hide and restore the tab; resize during a flight.
@@ -98,7 +103,7 @@ Manual browser smoke checklist:
   stale trails, catch-up bursts, or delayed launches after cancellation.
 - Navigate home → settings → home repeatedly: retain one canvas and one stage
   ticker callback, with the new page's scene and retained slider values. Check
-  reduced motion with Autoplay and Comets initially off, then enable each separately.
+  reduced motion with Autoplay and Comets initially off, then enable both for idle comets.
 - In a performance recording, drag settings sliders: output/fill changes should
   avoid zone queries and bounds reads. Add/remove a zone or alter its class/data
   attributes; move layout, scroll, or resize: bounds should still refresh.

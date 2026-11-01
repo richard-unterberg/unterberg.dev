@@ -265,9 +265,10 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       budget = 0
     }
     budget = Math.min(24, budget + dt * 180)
+    const idle = input?.isIdle(now) ?? false
     const pointerSample = input?.update(now, dt, width, height)
-    const cometSample = comets.update(dt)
-    // Share the existing frame budget so pointer movement cannot starve a comet's trail.
+    const cometSample = comets.update(dt, idle)
+    // Share the existing frame budget between the idle ellipse and comet trails.
     emit(pointerSample, pointerTrail, Math.floor(cometSample ? budget / 2 : budget))
     emit(cometSample, cometTrail, Math.floor(budget))
     if (pageBound && config.autoplay) {
@@ -336,7 +337,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     clouds.resize(config.bufferCount)
     layer = new Container({ eventMode: 'none' })
     app.stage.addChild(clouds.container, layer)
-    input = createInput(config)
+    input = createInput(config, comets.reset)
     host.append(app.canvas)
     resize()
     window.addEventListener(
@@ -373,7 +374,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
         resetTrails()
         budget = 0
       }
-      if (normalized.comets !== config.comets) comets.reset()
+      if (normalized.comets !== config.comets || normalized.autoplay !== config.autoplay) comets.reset()
       else if (normalized.cometSpawnRate.some((value, index) => value !== config.cometSpawnRate[index]))
         comets.reschedule()
       if (normalized.cloudSpawnRate.some((value, index) => value !== config.cloudSpawnRate[index]))

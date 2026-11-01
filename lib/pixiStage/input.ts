@@ -3,7 +3,7 @@ import { createPathPlayer, type MotionSample, type PlayOptions } from './pathPla
 import type { PageScene } from './scene'
 import { createZones } from './zones'
 
-export const createInput = (config: StageConfig) => {
+export const createInput = (config: StageConfig, onPointerActivity?: () => void) => {
   const listeners = new AbortController()
   const finePointer = matchMedia('(any-hover: hover) and (any-pointer: fine)')
   const pointer = { x: 0, y: 0, time: -Infinity, present: false, seen: false, version: 0 }
@@ -18,6 +18,9 @@ export const createInput = (config: StageConfig) => {
   let angle = 0
   let centerX = 0
   let centerY = 0
+
+  const isIdle = (now: number) =>
+    !(pointer.present && (pointer.version !== consumed || now - pointer.time < config.idleDelay))
 
   const cancel = () => {
     player.cancel()
@@ -37,6 +40,7 @@ export const createInput = (config: StageConfig) => {
     sample.generation++
   }
   const leave = () => {
+    onPointerActivity?.()
     pointer.present = false
     reset()
   }
@@ -44,6 +48,7 @@ export const createInput = (config: StageConfig) => {
     'pointermove',
     (event) => {
       if (event.pointerType === 'touch' || (!finePointer.matches && event.pointerType !== 'pen')) return
+      onPointerActivity?.()
       if (!pointer.present) reset()
       if (source !== 'pointer') {
         cancel()
@@ -98,18 +103,13 @@ export const createInput = (config: StageConfig) => {
     unbindPage,
     reset,
     pause,
+    isIdle,
     resize(width: number, height: number) {
       if (player.resize(width, height)) reset()
       zones.markDirty()
     },
     playPath(name: string, playback: PlayOptions) {
-      if (
-        !page ||
-        !config.animation ||
-        !config.autoplay ||
-        (pointer.present && performance.now() - pointer.time < config.idleDelay)
-      )
-        return false
+      if (!page || !config.animation || !config.autoplay || !isIdle(performance.now())) return false
       const started = player.playPath(name, playback)
       source = started ? 'path' : ''
       sample.generation++
@@ -119,15 +119,13 @@ export const createInput = (config: StageConfig) => {
     update(now: number, dt: number, width: number, height: number): MotionSample | null {
       if (!page) return null
       zones.update()
-      const pending = pointer.version !== consumed && pointer.present
-      const next =
-        pointer.present && (pending || now - pointer.time < config.idleDelay)
-          ? 'pointer'
-          : config.autoplay
-            ? player.playing && source === 'path'
-              ? 'path'
-              : 'ellipse'
-            : ''
+      const next = !isIdle(now)
+        ? 'pointer'
+        : config.autoplay
+          ? player.playing && source === 'path'
+            ? 'path'
+            : 'ellipse'
+          : ''
       if (!next) {
         if (source) reset()
         return null
