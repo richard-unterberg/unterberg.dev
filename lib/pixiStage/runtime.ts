@@ -3,6 +3,8 @@ import { Application, Assets, Container, Sprite, type Spritesheet, type Texture 
 import { createClouds } from './clouds'
 import { createConfig, normalizeConfig, type StageConfig } from './config'
 import { createInput } from './input'
+import type { PlayOptions } from './pathPlayer'
+import type { PageScene } from './scene'
 
 type Tile = {
   sprite: Sprite
@@ -86,6 +88,7 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
     const divider = Math.max(15, Math.min(80, 15 + ((width - 500) * 65) / 1400))
     cellSize = Math.floor(width / divider)
     app.renderer.resize(width, height, Math.min(window.devicePixelRatio || 1, config.resolutionCap))
+    input?.resize(width, height)
     resizePending = false
   }
   function syncScroll() {
@@ -235,14 +238,16 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       previousGeneration = sample.generation
       const dx = sample.x - previousX
       const dy = sample.y - previousY
-      const distance = Math.hypot(dx, dy)
+      const distance = sample.travel?.distance ?? Math.hypot(dx, dy)
       const spacing = 8
       const count = Math.floor((distance + spacingRemainder) / spacing)
       const permitted = Math.min(count, Math.floor(budget), 24)
       for (let i = 0; i < permitted; i++) {
         // Spread capped work over the segment and discard excess; never replay it.
         const step = count <= permitted ? (spacing - spacingRemainder + i * spacing) / distance : (i + 1) / permitted
-        spawn(previousX + dx * step, previousY + dy * step, sample.vx, sample.vy)
+        const point = sample.travel?.at(step)
+        if (point) spawn(point.x, point.y, point.vx, point.vy)
+        else spawn(previousX + dx * step, previousY + dy * step, sample.vx, sample.vy)
       }
       budget -= permitted
       spacingRemainder = (distance + spacingRemainder) % spacing
@@ -347,11 +352,18 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       if (disposed) return
       const normalized = normalizeConfig(next)
       if (
-        normalized.animation !== config.animation ||
         normalized.autoplay !== config.autoplay ||
+        normalized.autoplayMode !== config.autoplayMode ||
         normalized.orbitSize !== config.orbitSize
       )
         input?.reset()
+      if (normalized.animation !== config.animation) {
+        input?.pause()
+        lastFrame = 0
+        previousGeneration = -1
+        spacingRemainder = 0
+        budget = 0
+      }
       if (normalized.resolutionCap !== config.resolutionCap) resizePending = true
       Object.assign(config, normalized)
       while (active.length > config.bufferCount) release(active.length - 1, true)
@@ -365,14 +377,19 @@ export const createStage = async (host: HTMLElement, signal: AbortSignal) => {
       app.stage.visible = config.animation
       if (!config.animation) app.render()
     },
-    bindPage() {
+    playPath(name: string, options: PlayOptions) {
+      return !disposed && (input?.playPath(name, options) ?? false)
+    },
+    bindPage(scene: PageScene = {}) {
       if (disposed) return
       syncScroll()
       scroller = document.scrollingElement
       // Rebase the scroll source across routes without jumping surviving particles.
       scrollLeft = scroller?.scrollLeft ?? 0
       scrollTop = scroller?.scrollTop ?? 0
-      input?.bindPage()
+      config.autoplayMode = scene.mode === 'comet' ? 'comet' : 'ellipse'
+      input?.bindPage(scene)
+      if (scene.play) input?.playPath(scene.play.name, scene.play)
       pageBound = true
       resizePending = true
     },

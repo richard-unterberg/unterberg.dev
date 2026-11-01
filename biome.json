@@ -1,7 +1,16 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "includes": ["**", "!dist", "!node_modules", "!.astro", "!.branches"]
+    "includes": [
+      "**",
+      "!dist",
+      "!node_modules",
+      "!.astro",
+      "!.branches",
+      "!.agents",
+      "!.claude",
+      "!.openagent"
+    ]
   },
   "formatter": {
     "indentWidth": 2,

@@ -3,10 +3,26 @@ import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
 import Controls from '@lib/pixiStage/Controls.astro'
+import type { PageScene } from '@lib/pixiStage/scene'
+
+const scene = {
+  mode: 'comet',
+  paths: {
+    curveA: {
+      d: 'M-40,200 C240,40 760,560 1040,400',
+      viewBox: [0, 0, 1000, 600],
+    },
+  },
+  comet: {
+    interval: [2, 20], // seconds, start-to-start; flights never overlap
+    duration: [2, 5], // seconds per flight, independent of launch interval
+    curvature: [0.06, 0.18], // bow as a fraction of the shorter viewport dimension
+  },
+} satisfies PageScene
 ---
 
 <AppShell title="welcome">
-  <PixiStage>
+  <PixiStage scene={scene}>
     <LayoutComponent
       class="prose-headings:m-0 h-dvh flex items-center justify-center text-center"
     >

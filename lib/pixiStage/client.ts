@@ -1,5 +1,6 @@
 import { bindControls } from './controls'
 import type { createStage } from './runtime'
+import type { PageScene } from './scene'
 
 const lifetime = new AbortController()
 const motion = matchMedia('(prefers-reduced-motion: reduce)')
@@ -15,7 +16,16 @@ const bindPage = () => {
   const main = document.querySelector('main')
   if (main === boundMain) return
   disposeControls?.()
-  stage.bindPage()
+  const definition = main?.querySelector<HTMLElement>('[data-pixi-scene]')?.dataset.pixiScene
+  let scene: PageScene = {}
+  if (definition) {
+    try {
+      scene = JSON.parse(definition) as PageScene
+    } catch (error) {
+      console.error('Invalid Pixi scene configuration', error)
+    }
+  }
+  stage.bindPage(scene)
   const current = stage
   disposeControls = bindControls(current.config, (next) => {
     if (next.autoplay !== current.config.autoplay) autoplayOverride = true

@@ -34,6 +34,13 @@ const { id = 'pixi-settings' } = Astro.props
       >
       Autoplay (also with reduced motion)
     </label>
+    <label class="flex items-center gap-2">
+      Autoplay mode
+      <select data-pixi-key="autoplayMode" class="select select-sm">
+        <option value="ellipse">Ellipse</option>
+        <option value="comet">Comet</option>
+      </select>
+    </label>
   </div>
   <div class="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4 lg:grid-cols-5">
     {Object.entries(PixiConfig).map(([key, setting]) => {

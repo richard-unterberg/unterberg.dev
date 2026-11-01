@@ -48,7 +48,7 @@ export const PixiConfig = {
 
 export type StageConfig = {
   [K in keyof typeof PixiConfig]: (typeof PixiConfig)[K]['value']
-} & { animation: boolean; autoplay: boolean }
+} & { animation: boolean; autoplay: boolean; autoplayMode: 'ellipse' | 'comet' }
 
 export const createConfig = (reducedMotion = false): StageConfig => {
   return {
@@ -57,6 +57,7 @@ export const createConfig = (reducedMotion = false): StageConfig => {
     ),
     animation: true,
     autoplay: !reducedMotion,
+    autoplayMode: 'ellipse',
   } as StageConfig
 }
 
@@ -79,5 +80,6 @@ export const normalizeConfig = (next: StageConfig): StageConfig => {
   config.bufferCount = Math.floor(config.bufferCount)
   config.animation = typeof next.animation === 'boolean' ? next.animation : true
   config.autoplay = typeof next.autoplay === 'boolean' ? next.autoplay : true
+  config.autoplayMode = next.autoplayMode === 'comet' ? 'comet' : 'ellipse'
   return config
 }
