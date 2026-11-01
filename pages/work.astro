@@ -1,10 +1,16 @@
 ---
+import LayoutComponent from '@components/LayoutComponent.astro';
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
+
+const response = await fetch("/open-source-projects.json");
+const data = await response.json();
+const projects = data.results[0];
 ---
 
 <AppShell>
   <PixiStage>
+    <LayoutComponent class="pixi-hitbox">
     <ul>
       <li>marmo</li>
       <li>nivel</li>
@@ -27,5 +33,6 @@ import PixiStage from '@layouts/PixiStage.astro'
       <li>soup-station</li>
       <li>music: return false</li>
     </ul>
+    </LayoutComponent>
   </PixiStage>
 </AppShell>

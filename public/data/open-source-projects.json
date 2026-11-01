@@ -1,0 +1,184 @@
+[
+  {
+    "id": "marmo",
+    "name": "Marmo",
+    "description": "A typed component factory for building reusable UI components around class names. Marmo separates styling logic from markup through configurable variants, dynamic styles, and component composition. It supports React and SolidJS, with an experimental Astro adapter for static HTML rendering.",
+    "technologies": [
+      "TypeScript",
+      "React",
+      "SolidJS",
+      "Astro (experimental)",
+      "tailwind-merge"
+    ],
+    "developmentFocus": "Frontend library development, typed component APIs, reusable UI architecture, and styling ergonomics.",
+    "additionalLinks": [],
+    "repositoryUrl": "https://github.com/richard-unterberg/marmo",
+    "notes": []
+  },
+  {
+    "id": "nivel",
+    "name": "Nivel",
+    "description": "A graph-driven documentation engine and static site builder for MDX content. Nivel uses an explicit, typed structure of sections, groups, and pages to derive routes and navigation. Its reusable engine, CLI, and Vike integration connect content configuration with a customizable React documentation interface.",
+    "technologies": [
+      "TypeScript",
+      "React",
+      "Vike",
+      "Vite",
+      "MDX",
+      "Node.js",
+      "Tailwind CSS",
+      "DaisyUI",
+      "Zustand",
+      "Shiki"
+    ],
+    "developmentFocus": "Documentation tooling, graph-based information architecture, static site generation, and developer experience.",
+    "repositoryUrl": "https://github.com/richard-unterberg/nivel",
+    "additionalLinks": [],
+    "notes": [
+      "Public alpha."
+    ]
+  },
+  {
+    "id": "vike-landing-page",
+    "name": "Vike Landing Page",
+    "description": "An interactive landing page for the Vike web framework, contributed to the official project. Responsive layouts, animated SVG illustrations, and scroll-driven navigation explain the framework's flexibility, stability, and developer experience through an engaging technical product presentation.",
+    "technologies": [
+      "TypeScript",
+      "React",
+      "Vike",
+      "Vite",
+      "GSAP",
+      "ScrollTrigger",
+      "SVG",
+      "Tailwind CSS",
+      "DaisyUI"
+    ],
+    "developmentFocus": "Creative frontend development, interaction design, responsive interfaces, web animation, and visual communication of technical concepts.",
+    "repositoryUrl": "https://github.com/vikejs/vike",
+    "additionalLinks": [
+      {
+        "label": "Official landing-page source",
+        "url": "https://github.com/vikejs/vike/tree/main/docs/pages/index"
+      },
+      {
+        "label": "Personal fork",
+        "url": "https://github.com/richard-unterberg/vike2"
+      },
+      {
+        "label": "Merged landing-page PR #3073",
+        "url": "https://github.com/vikejs/vike/pull/3073"
+      }
+    ],
+    "notes": [
+      "Landing-page contribution within Vike's shared repository; merged in PR #3073."
+    ]
+  },
+  {
+    "id": "vite-beasties-output",
+    "name": "vite-beasties-output",
+    "description": "A post-build adapter that uses Beasties to extract and inline critical CSS into generated HTML. Dedicated Vite and Astro integrations process final build output, making the plugin suitable for static sites and prerendered applications, including Vike builds.",
+    "technologies": [
+      "TypeScript",
+      "Node.js",
+      "Vite plugin API",
+      "Astro integration API",
+      "Beasties"
+    ],
+    "developmentFocus": "Frontend performance, critical CSS, build tooling, and framework integration.",
+    "repositoryUrl": "https://github.com/richard-unterberg/vite-beasties-output",
+    "additionalLinks": [],
+    "notes": []
+  },
+  {
+    "id": "astro-maplibre",
+    "name": "astro-maplibre",
+    "description": "A multilingual place explorer combining statically generated Astro pages with an interactive MapLibre map. Category views and place details share a map that persists across client navigation. Camera framing adapts to content overlays, while validated JSON data is loaded during the build.",
+    "technologies": [
+      "Astro",
+      "TypeScript",
+      "MapLibre GL JS",
+      "Astro View Transitions",
+      "Zod",
+      "Tailwind CSS",
+      "DaisyUI"
+    ],
+    "developmentFocus": "Geospatial frontend development, static site architecture, build-time data validation, and map navigation.",
+    "repositoryUrl": "https://github.com/richard-unterberg/astro-maplibre",
+    "additionalLinks": [],
+    "notes": [
+      "Ongoing work."
+    ]
+  },
+  {
+    "id": "leaflet-nextjs-ts-starter",
+    "name": "leaflet-nextjs-ts-starter",
+    "description": "A Next.js and TypeScript starter for Leaflet-based maps. Custom marker icons and popups, category-specific clustering, responsive map framing, and location controls provide a practical foundation for mapping interfaces. Reusable React components and hooks handle the integration of browser-based map functionality.",
+    "technologies": [
+      "TypeScript",
+      "Next.js",
+      "React",
+      "Leaflet",
+      "React Leaflet",
+      "leaflet.markercluster",
+      "Tailwind CSS"
+    ],
+    "developmentFocus": "Reusable mapping components, React integration, responsive geospatial interfaces, and marker interaction.",
+    "repositoryUrl": "https://github.com/richard-unterberg/leaflet-nextjs-ts-starter",
+    "additionalLinks": [],
+    "notes": []
+  },
+  {
+    "id": "maplibre-vike",
+    "name": "maplibre-vike",
+    "description": "A React and Vike place explorer with prerendered multilingual pages and a shared interactive MapLibre map. Route-driven location details appear in an animated drawer, while coordinated camera state and layout-aware padding keep selected places visible as the interface changes.",
+    "technologies": [
+      "TypeScript",
+      "React",
+      "Vike",
+      "Vite",
+      "MapLibre GL JS",
+      "Zustand",
+      "Motion",
+      "Tailwind CSS",
+      "DaisyUI"
+    ],
+    "developmentFocus": "Geospatial application architecture, prerendering, route-driven interfaces, and map camera synchronization.",
+    "repositoryUrl": "https://github.com/richard-unterberg/maplibre-vike",
+    "additionalLinks": [],
+    "notes": []
+  },
+  {
+    "id": "maplibre-nextjs-ts-starter",
+    "name": "maplibre-nextjs-ts-starter",
+    "description": "A TypeScript starter for interactive MapLibre applications in Next.js. It demonstrates two marker-rendering approaches: custom React markers and native GeoJSON layers. Category-based clustering, popups, map controls, and shared application state support the development of customized mapping interfaces.",
+    "technologies": [
+      "TypeScript",
+      "Next.js",
+      "React",
+      "MapLibre GL JS",
+      "react-map-gl",
+      "Zustand",
+      "Supercluster",
+      "Tailwind CSS"
+    ],
+    "developmentFocus": "Geospatial frontend architecture, marker rendering, clustering, and the trade-offs between customization and rendering performance.",
+    "repositoryUrl": "https://github.com/richard-unterberg/maplibre-nextjs-ts-starter",
+    "additionalLinks": [],
+    "notes": []
+  },
+  {
+    "id": "convert-to-arrow",
+    "name": "convert-to-arrow",
+    "description": "A command-line codemod for converting JavaScript and TypeScript function declarations into arrow functions. Built on ts-morph, it preserves type annotations and generics, handles exports, and skips selected cases where conversion could alter behavior or produce invalid code. Optional reports explain skipped conversions.",
+    "technologies": [
+      "TypeScript",
+      "Node.js",
+      "ts-morph",
+      "TypeScript AST"
+    ],
+    "developmentFocus": "Developer tooling, automated refactoring, static analysis, and JavaScript/TypeScript code transformation.",
+    "repositoryUrl": "https://github.com/richard-unterberg/convert-to-arrow",
+    "additionalLinks": [],
+    "notes": []
+  }
+]
