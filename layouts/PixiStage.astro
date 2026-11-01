@@ -1,3 +1,15 @@
-<div class="prose-container">
+---
+import type { PageScene } from '@lib/pixiStage/scene'
+
+interface Props {
+  scene?: PageScene
+}
+const { scene } = Astro.props
+---
+
+<div
+  class="prose-container"
+  data-pixi-scene={scene ? JSON.stringify(scene) : undefined}
+>
   <slot />
 </div>

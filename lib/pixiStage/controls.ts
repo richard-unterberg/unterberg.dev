@@ -5,10 +5,10 @@ export const bindControls = (config: StageConfig, update: (next: StageConfig) =>
   const listeners = new AbortController()
   const render = () => {
     for (const root of roots) {
-      for (const input of root.querySelectorAll<HTMLInputElement>('[data-pixi-key]')) {
+      for (const input of root.querySelectorAll<HTMLInputElement | HTMLSelectElement>('[data-pixi-key]')) {
         const key = input.dataset.pixiKey as keyof StageConfig
         const value = config[key]
-        if (typeof value === 'boolean') input.checked = value
+        if (typeof value === 'boolean' && input instanceof HTMLInputElement) input.checked = value
         else input.value = String(Array.isArray(value) ? value[Number(input.dataset.pixiBound)] : value)
       }
       for (const slider of root.querySelectorAll<HTMLElement>('[data-pixi-slider]')) {
@@ -44,11 +44,12 @@ export const bindControls = (config: StageConfig, update: (next: StageConfig) =>
       'input',
       (event) => {
         const input = event.target
-        if (!(input instanceof HTMLInputElement) || !input.dataset.pixiKey) return
+        if (!(input instanceof HTMLInputElement || input instanceof HTMLSelectElement) || !input.dataset.pixiKey) return
         const key = input.dataset.pixiKey as keyof StageConfig
         const next = { ...config }
         const current = config[key]
-        if (typeof current === 'boolean') Object.assign(next, { [key]: input.checked })
+        if (input instanceof HTMLSelectElement) Object.assign(next, { [key]: input.value })
+        else if (typeof current === 'boolean') Object.assign(next, { [key]: input.checked })
         else if (Array.isArray(current)) {
           const values: [number, number] = [...current]
           const bound = Number(input.dataset.pixiBound)

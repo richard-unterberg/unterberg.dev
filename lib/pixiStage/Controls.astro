@@ -34,6 +34,14 @@ const { id = 'pixi-settings' } = Astro.props
       >
       Autoplay (also with reduced motion)
     </label>
+    <label class="flex items-center gap-2">
+      <input
+        type="checkbox"
+        data-pixi-key="comets"
+        class="checkbox checkbox-sm"
+      >
+      Comets during idle autoplay
+    </label>
   </div>
   <div class="grid grid-cols-2 gap-x-6 gap-y-4 md:grid-cols-4 lg:grid-cols-5">
     {Object.entries(PixiConfig).map(([key, setting]) => {

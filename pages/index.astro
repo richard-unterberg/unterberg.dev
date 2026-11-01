@@ -3,21 +3,38 @@ import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
 import Controls from '@lib/pixiStage/Controls.astro'
+import type { PageScene } from '@lib/pixiStage/scene'
+
+const scene = {
+  paths: {
+    curveA: {
+      d: 'M-40,200 C240,40 760,560 1040,400',
+      viewBox: [0, 0, 1000, 600],
+    },
+  },
+  comet: {
+    curvature: [0.06, 0.18], // bow as a fraction of the shorter viewport dimension
+  },
+} satisfies PageScene
 ---
 
 <AppShell title="welcome">
-  <PixiStage>
+  <PixiStage scene={scene}>
     <LayoutComponent
+      type="small"
       class="prose-headings:m-0 h-dvh flex items-center justify-center text-center"
     >
-      <div>
-        <h1 class="text-sm font-normal text-base-muted pixi-hitbox">
+      <div class="gap-y-4 flex flex-col">
+        <h1 class="text-sm font-normal pixi-deadzone text-base-muted-medium">
           Web & Software Development
         </h1>
-        <h2 class="text-6xl font-black  pixi-hitbox">Hello</h2>
-        <p class="text-lg  pixi-hitbox">
-          I'm Richard and I like to build modern websites and interfaces. ✌️
+        <h2 class="text-7xl font-black  pixi-hitbox">Hello together</h2>
+        <p class="text-xl pixi-hitbox w-2/3 mx-auto">
+          I'm Richard, a professional web- & typescript developer from germany and I like to build modern websites and interfaces. ✌️
         </p>
+        <a href="/work/" class="btn btn-neutral w-fit mx-auto pixi-deadzone">
+          See my work
+        </a>
       </div>
     </LayoutComponent>
     <LayoutComponent class="space-y-8 pb-16">
@@ -30,7 +47,7 @@ import Controls from '@lib/pixiStage/Controls.astro'
           class="pixi-deadzone rounded-box border border-base-300 bg-base-100/95 p-5"
         >
           <h2 class="text-lg font-bold">Deadzone: no new particles</h2>
-          <p>Pointer and autoplay emissions stop inside this area.</p>
+          <p>Pointer, autoplay, and comet emissions stop inside this area.</p>
         </section>
       </div>
       <Controls id="home-pixi-settings" />
