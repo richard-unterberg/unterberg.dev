@@ -1,57 +1,33 @@
 ---
-import { cva } from 'cva'
+import ma from '@marmo/astro'
+import type { HTMLAttributes } from 'astro/types'
 
-const layoutClass = cva({
-  base: 'm-auto relative',
+export const layoutComponentSizeMapping = {
+  xxs: 'max-w-[480px]',
+  xs: 'max-w-[768px]',
+  sm: 'max-w-[1000px]',
+  md: 'max-w-[1480px]',
+  lg: 'max-w-[1800px]',
+} as const
+
+export type LayoutSize = keyof typeof layoutComponentSizeMapping
+
+export interface Props extends HTMLAttributes<'div'> {
+  $size?: LayoutSize
+  $noGrow?: boolean
+}
+
+const StyledLayout = ma.div.variants<Props, { $size?: LayoutSize }>({
+  base: ({ $noGrow }) => ($noGrow ? '' : 'm-auto w-full px-4'),
   variants: {
-    type: {
-      full: 'w-full',
-      small: 'max-w-4xl px-3',
-      normalWithoutGutter: 'max-w-6xl px-0',
-      normal: 'max-w-6xl px-3 sm:px-5',
-    },
+    $size: layoutComponentSizeMapping,
   },
   defaultVariants: {
-    type: 'normal',
+    $size: 'md',
   },
 })
-
-const { type, class: className, ...attributes } = Astro.props
 ---
 
-<div {...attributes} class={layoutClass({ type, class: className })}>
+<StyledLayout {...Astro.props}>
   <slot />
-</div>
-
-<!-- 
-
-// import cm from "@classmatejs/solid"
-
-// type LayoutSize = "xxs" | "xs" | "sm" | "md" | "lg"
-
-// export const layoutComponentSizeMapping = {
-//   xxs: "max-w-[480px]",
-//   xs: "max-w-[768px]",
-//   sm: "max-w-[1000px]",
-//   md: "max-w-[1480px]",
-//   lg: "max-w-[1800px]",
-// } as const
-
-// interface LayoutComponentProps {
-//   $size?: LayoutSize
-//   $noGrow?: boolean
-// }
-
-// const LayoutComponent = cm.div.variants<LayoutComponentProps>({
-//   base: ({ $noGrow }) => ($noGrow ? "" : "m-auto w-full px-4"),
-//   variants: {
-//     $size: layoutComponentSizeMapping,
-//   },
-//   defaultVariants: {
-//     $size: LayoutSize.lg,
-//   },
-// })
-
-// export default LayoutComponent
-
--->
+</StyledLayout>

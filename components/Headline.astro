@@ -19,14 +19,14 @@ export function createHeadlineComponent(level: Exclude<HeadlineElement, 'p'>) {
         // Register `as` so Marmo consumes it instead of rendering an HTML attribute.
         as: {},
         variant: {
-          ultra: 'text-7xl font-black',
-          h1: 'text-5xl font-bold tracking-tight',
-          h2: 'text-4xl font-bold',
-          h3: 'text-3xl font-bold',
-          h4: 'text-2xl font-bold',
-          h5: 'text-xl font-bold',
-          h6: 'text-lg font-bold',
-          p: 'text-base font-normal',
+          ultra: "text-6xl xl:text-7xl font-black",
+          h1: "text-5xl md:lg:text-6xl lg:text-7xl font-black",
+          h2: "text-4xl md:text-5xl font-bold text-light",
+          h3: "text-3xl text-gray font-bold",
+          h4: "text-2xl text-light font-bold",
+          h5: "text-xl font-medium text-gray",
+          h6: "text-lg font-medium text-light",
+          p: "text-base",
         },
       },
     })

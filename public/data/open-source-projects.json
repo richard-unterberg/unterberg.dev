@@ -13,7 +13,10 @@
     "developmentFocus": "Frontend library development, typed component APIs, reusable UI architecture, and styling ergonomics.",
     "additionalLinks": [],
     "repositoryUrl": "https://github.com/richard-unterberg/marmo",
-    "notes": []
+    "notes": [],
+    "images": [
+      "marmo.webp"
+    ]
   },
   {
     "id": "nivel",
@@ -34,7 +37,10 @@
     "developmentFocus": "Documentation tooling, graph-based information architecture, static site generation, and developer experience.",
     "repositoryUrl": "https://github.com/richard-unterberg/nivel",
     "additionalLinks": [],
-    "notes": ["Public alpha."]
+    "notes": ["Public alpha."],
+    "images": [
+      "nivel.webp"
+    ]
   },
   {
     "id": "vike-landing-page",
@@ -69,6 +75,9 @@
     ],
     "notes": [
       "Landing-page contribution within Vike's shared repository; merged in PR #3073."
+    ],
+    "images": [
+      "vike-landing-page.webp"
     ]
   },
   {
@@ -103,7 +112,10 @@
     "developmentFocus": "Geospatial frontend development, static site architecture, build-time data validation, and map navigation.",
     "repositoryUrl": "https://github.com/richard-unterberg/astro-maplibre",
     "additionalLinks": [],
-    "notes": ["Ongoing work."]
+    "notes": ["Ongoing work."],
+    "images": [
+      "astro-maplibre.webp"
+    ]
   },
   {
     "id": "leaflet-nextjs-ts-starter",
@@ -121,7 +133,10 @@
     "developmentFocus": "Reusable mapping components, React integration, responsive geospatial interfaces, and marker interaction.",
     "repositoryUrl": "https://github.com/richard-unterberg/leaflet-nextjs-ts-starter",
     "additionalLinks": [],
-    "notes": []
+    "notes": [],
+    "images": [
+      "leaflet-nextjs-ts-starter.webp"
+    ]
   },
   {
     "id": "maplibre-vike",
@@ -141,7 +156,10 @@
     "developmentFocus": "Geospatial application architecture, prerendering, route-driven interfaces, and map camera synchronization.",
     "repositoryUrl": "https://github.com/richard-unterberg/maplibre-vike",
     "additionalLinks": [],
-    "notes": []
+    "notes": [],
+    "images": [
+      "maplibre-vike.webp"
+    ]
   },
   {
     "id": "maplibre-nextjs-ts-starter",
@@ -160,7 +178,10 @@
     "developmentFocus": "Geospatial frontend architecture, marker rendering, clustering, and the trade-offs between customization and rendering performance.",
     "repositoryUrl": "https://github.com/richard-unterberg/maplibre-nextjs-ts-starter",
     "additionalLinks": [],
-    "notes": []
+    "notes": [],
+    "images": [
+      "maplibre-nextjs-ts-starter.webp"
+    ]
   },
   {
     "id": "convert-to-arrow",

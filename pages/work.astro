@@ -1,5 +1,5 @@
 ---
-import Headline from '@components/Headline.astro'
+import Headline, { H2Headline, H3Headline } from '@components/Headline.astro'
 import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
@@ -13,7 +13,8 @@ type Project = {
   developmentFocus: string
   additionalLinks: string[]
   repositoryUrl: string
-  notes: string[]
+  notes: string[],
+  images?: string[]
 }
 
 const response = await fetch(
@@ -26,47 +27,70 @@ console.log(data)
 <AppShell>
   <PixiStage>
     <LayoutComponent class="z-2">
-      <Headline variant="ultra" class="pixi-hitbox inline-block">Open Source</Headline>
-      <p>
-        Only the most "completed" projects sitting here. Visit my github profile for more open source projects and contributions.
-      </p>
-      <div class="grid grid-cols-1 prose-headings:my-0 pixi-deadzone">
-        {data &&
-          data.length > 0 &&
-          data.map((project, i) => (
-            <div class="grid grid-cols-2">
-              <div
-                class={maMerge(
-                  'min-h-60 flex flex-col',
-                  i % 2 === 0 && 'order-last',
-                )}
-              >
-                <h2 class="text-3xl mb-4!">{project.name}</h2>
-                <h3 class="text-lg mb-10!">{project.developmentFocus}</h3>
-                <p class="flex-1">{project.description}</p>
-                <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
-                  {project.technologies.map((tech) => (
-                    <li class="badge badge-primary badge-soft badge-sm">
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div class="bg-base-muted-superlight rounded">123</div>
-            </div>
-          ))}
+      <div class="prose-headings:my-0 pt-16">
+        <Headline variant="ultra" class="pixi-hitbox inline-block"
+          >Open Source</Headline
+        >
+        <Headline
+          as="p"
+          variant="h4"
+          class="pixi-hitbox inline-block font-normal!"
+        >
+          Only grown-up projects sitting here. Visit my github profile for more
+          open source projects and contributions.
+        </Headline>
       </div>
-
-      <ul>
-        <li>demon-designs.de</li>
-        <li>diefabrik.de</li>
-        <li>unterberg.dev</li>
-      </ul>
-
-      <ul>
-        <li>soup-station</li>
-        <li>music: return false</li>
-      </ul>
+      <div class="prose-headings:my-0 pixi-deadzone">
+        {data &&
+            data.length > 0 &&
+            data.map((project, i) => (
+              <div class="grid grid-cols-2 gap-10 mb-10">
+                <div
+                  class={maMerge(
+                    "min-h-90 flex flex-col gap-5",
+                    i % 2 === 0 && "order-last",
+                  )}
+                >
+                  <H2Headline variant="h3">{project.name}</H2Headline>
+                  <Headline as="h3" variant="p" class="">
+                    {project.developmentFocus}
+                  </Headline>
+                  <p class="flex-1">{project.description}</p>
+                  <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
+                    {project.technologies.map((tech) => (
+                      <li class="badge badge-primary badge-soft badge-sm">
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div class="bg-base-muted-superlight rounded">
+                  {project?.images && project.images.length > 0 && (
+                    <img
+                      src={`/work/${project.images[0]}`}
+                      alt={project.name}
+                      class="w-full h-full object-cover rounded"
+                    />
+                  )}
+                </div>
+              </div>
+            ))}
+        <Headline variant="ultra" class="pixi-hitbox inline-block">
+          Business
+        </Headline>
+        <ul>
+          <li>demon-designs.de</li>
+          <li>diefabrik.de</li>
+          <li>unterberg.dev</li>
+        </ul>
+        <Headline variant="ultra" class="pixi-hitbox inline-block">
+          Aside
+        </Headline>
+        <ul>
+          <li>soup-station</li>
+          <li>music: return false</li>
+        </ul>
+      </div>
     </LayoutComponent>
   </PixiStage>
 </AppShell>
