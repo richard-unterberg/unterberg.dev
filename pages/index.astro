@@ -20,19 +20,16 @@ const scene = {
 
 <AppShell title="welcome">
   <PixiStage scene={scene}>
-    <div class="w-full overflow-hidden h-full max-w-full absolute top-0 left-0 pointer-events-none z-3">
-      <div class="absolute min-w-300 left-1/2 w-full h-svh from-primary/5 to-transparent bg-radial-[at_50%_30%] to-35% lg:to-55% translate-x-[-50%] pointer-events-none" />
-    </div>
     <LayoutComponent
       $size="sm"
       class="prose-headings:m-0 h-full"
     >
-      <div class="flex flex-col text-center justify-center items-center min-h-full">
+      <div class="flex flex-col text-center justify-center items-center min-h-full -translate-y-16">
         <p class="text-base-muted mb-2!">
           Web & Software Development
         </p>
         <Headline variant="ultra" class="font-black pixi-hitbox relative z-4">Hello together</Headline>
-        <p class="text-xl pixi-hitbox w-2/3 mx-auto">
+        <p class="text-xl pixi-hitbox w-2/3 mx-auto mt-10">
           I'm Richard, a professional web- & typescript developer from germany and I like to build modern websites and interfaces ✌️.
         </p>
         <div class="flex gap-4 justify-center items-center">

@@ -38,6 +38,7 @@ const groupedEntries = data.filter((item) => item.group);
       <div
         class="prose-headings:my-0 pt-16 mb-16 min-h-[40dvh] flex flex-col justify-center"
       >
+        <span class="text-primary">Contributions</span>
         <Headline variant="ultra" class="pixi-hitbox inline-block">
           Open Source
         </Headline>
@@ -46,8 +47,8 @@ const groupedEntries = data.filter((item) => item.group);
           variant="h4"
           class="pixi-hitbox inline-block font-normal!"
         >
-          Only selected projects sitting here. Visit my github profile for more
-          open source projects and contributions.
+          Only selected projects sitting here.<br />
+          Visit my github profile for more open source projects and contributions.
         </Headline>
       </div>
       <div class="prose-headings:my-0 pixi-hitbox">
@@ -55,7 +56,7 @@ const groupedEntries = data.filter((item) => item.group);
           normalEntries &&
             normalEntries.length > 0 &&
             normalEntries.map((project, i) => (
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mb-20">
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mb-24">
                 <div
                   class={maMerge(
                     "min-h-90 flex flex-col gap-5",
@@ -67,7 +68,14 @@ const groupedEntries = data.filter((item) => item.group);
                     {project.developmentFocus}
                   </Headline>
                   <p class="flex-1">{project.description}</p>
-                  <p class="flex flex-1 gap-2 items-center">
+                  <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
+                    {project.technologies.map((tech) => (
+                      <li class="badge badge-primary badge-soft badge-sm">
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                  <div class="flex gap-2 items-center">
                     <a
                       href={project.repositoryUrl}
                       class="btn btn-neutral btn-outline"
@@ -89,20 +97,12 @@ const groupedEntries = data.filter((item) => item.group);
                         official page
                       </a>
                     )}
-                  </p>
-
-                  <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
-                    {project.technologies.map((tech) => (
-                      <li class="badge badge-primary badge-soft badge-sm">
-                        {tech}
-                      </li>
-                    ))}
-                  </ul>
+                  </div>
                 </div>
                 <div class="bg-base-muted-superlight rounded-box border-2 border-base-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
                   {project?.images && project.images.length > 0 && (
                     <a
-                      href={project.repositoryUrl}
+                      href={project?.website || project?.repositoryUrl || "#"}
                       target="_blank"
                       rel="noreferrer"
                       aria-label="Visit the project repo"
@@ -121,35 +121,34 @@ const groupedEntries = data.filter((item) => item.group);
               </div>
             ))
         }
-        <H2Headline variant="h1" class="my-20!">Other OSS Tools</H2Headline>
+        <span class="text-primary mt-20">Work</span>
+        <H2Headline variant="h1" class="mb-20!">Other OSS Tools</H2Headline>
         {
           groupedEntries && groupedEntries.length >= 0 && (
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mt-16">
               {groupedEntries.map((project, i) => (
-                <div class="min-h-40 flex flex-col gap-5 bg-primary-muted-superlight p-8 xl:p-12 rounded-box border-2 border-primary-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
+                <div class="min-h-30 flex flex-col gap-5 bg-primary-muted-superlight p-8 xl:p-12 rounded-box border-2 border-primary-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
                   <H2Headline variant="h3">{project.name}</H2Headline>
-                  <Headline as="h3" variant="p" class="min-h-15 w-3/4">
-                    {project.developmentFocus}
-                  </Headline>
-                  <p class="flex-1">{project.description}</p>
-                  <p>
-                    <a
-                      href={project.repositoryUrl}
-                      class="btn btn-neutral"
-                      aria-label="Visit my Github profile"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <GithubIcon class="size-4" /> See Project on Github
-                    </a>
-                  </p>
-                  <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
+                  <ul class="not-prose gap-2 flex flex-wrap justify-start">
                     {project.technologies.map((tech) => (
-                      <li class="badge badge-secondary badge-soft badge-sm">
+                      <li class="badge badge-primary badge-soft badge-sm">
                         {tech}
                       </li>
                     ))}
                   </ul>
+                  <Headline as="h3" variant="p" class="min-h-15 w-3/4">
+                    {project.developmentFocus}
+                  </Headline>
+                  <p class="flex-1">{project.description}</p>
+                  <a
+                    href={project.repositoryUrl}
+                    class="btn btn-neutral w-1/2"
+                    aria-label="Visit my Github profile"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <GithubIcon class="size-4" /> See Project on Github
+                  </a>
                 </div>
               ))}
             </div>
@@ -158,23 +157,74 @@ const groupedEntries = data.filter((item) => item.group);
       </div>
     </LayoutComponent>
     <LayoutComponent
-      class="flex justify-between prose-headings:my-0 my-20 border-y border-base-muted-light py-20 pixi-hitbox"
+      class="flex justify-between prose-headings:my-0 gap-14 my-20 border-y border-base-muted-light py-20 pixi-hitbox"
     >
-      <H2Headline class="">More OSS projects?</H2Headline>
+      <H2Headline class="">More projects? <span class="text-primary">See my Github.</span></H2Headline>
       <a
         href="https://github.com/richard-unterberg"
         class="btn btn-xl btn-outline btn-primary"
-        ><GithubIcon class="size-7" /> My Github Profile</a
+        ><GithubIcon class="size-7" /> Check my Github Profile</a
       >
     </LayoutComponent>
-    <LayoutComponent>
-      <Headline variant="ultra" class="pixi-hitbox inline-block">
-        Aside
-      </Headline>
-      <ul>
-        <li>soup-station</li>
-        <li>music: return false</li>
-      </ul>
+    <LayoutComponent class="z-3">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 xl:gap-10">
+      <div
+        class="prose-headings:my-0 mb-16 min-h-[40dvh] flex flex-col justify-center col-span-2"
+      >
+        <span class="text-primary">My Embedded Project</span>
+        <Headline variant="ultra" class="pixi-hitbox inline-block">
+          Soup Station
+        </Headline>
+        <Headline
+          as="p"
+          variant="h4"
+          class="pixi-hitbox inline-block font-normal! w-3/4"
+        >
+          The bold idea becomes reality: 
+          An embedded audio workstation, which can play and record multiple audio
+          clips and sequence between them.<br />
+        </Headline>
+      </div>
+<img
+          width={500}
+          height={300}
+          loading="lazy"
+          src={`/work/soup/soup-ai-model.png`}
+          alt="Soup Station Model"
+          class="w-full h-auto rounded"
+        />
+</div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3">
+        <div class="col-span-2">
+          Some text about the project. Lorem ipsum dolor sit amet, consectetur
+          adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+          fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
+          sunt in culpa qui officia deserunt mollit anim id est laborum.
+          <div class="grid grid-cols-2 h-40 relative">
+            <img
+              width={500}
+              height={300}
+              loading="lazy"
+              src={`/work/soup/side.jpg`}
+              alt="Soup Station Model"
+              class="w-full h-full rounded object-cover"
+            />
+            <img
+              width={500}
+              height={300}
+              loading="lazy"
+              src={`/work/soup/top.jpg`}
+              alt="Soup Station Model"
+              class="w-full h-full rounded object-cover"
+            />
+          </div>
+        </div>
+        
+      </div>
     </LayoutComponent>
     <div class="bg-primary-muted-superlight">
       <LayoutComponent
