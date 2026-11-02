@@ -89,7 +89,8 @@
     "developmentFocus": "Frontend performance, critical CSS, build tooling, and framework integration.",
     "repositoryUrl": "https://github.com/richard-unterberg/vite-beasties-output",
     "additionalLinks": [],
-    "notes": []
+    "notes": [],
+    "group": true
   },
   {
     "id": "astro-maplibre",
@@ -138,6 +139,7 @@
     "developmentFocus": "Developer tooling, automated refactoring, static analysis, and JavaScript/TypeScript code transformation.",
     "repositoryUrl": "https://github.com/richard-unterberg/convert-to-arrow",
     "additionalLinks": [],
-    "notes": []
+    "notes": [],
+    "group": true
   }
 ]
