@@ -111,27 +111,6 @@
     "images": ["astro-maplibre.webp"]
   },
   {
-    "id": "maplibre-vike",
-    "name": "maplibre-vike",
-    "description": "A React and Vike place explorer with prerendered multilingual pages and a shared interactive MapLibre map. Route-driven location details appear in an animated drawer, while coordinated camera state and layout-aware padding keep selected places visible as the interface changes.",
-    "technologies": [
-      "TypeScript",
-      "React",
-      "Vike",
-      "Vite",
-      "MapLibre GL JS",
-      "Zustand",
-      "Motion",
-      "Tailwind CSS",
-      "DaisyUI"
-    ],
-    "developmentFocus": "Geospatial application architecture, prerendering, route-driven interfaces, and map camera synchronization.",
-    "repositoryUrl": "https://github.com/richard-unterberg/maplibre-vike",
-    "additionalLinks": [],
-    "notes": [],
-    "images": ["maplibre-vike.webp"]
-  },
-  {
     "id": "maplibre-nextjs-ts-starter",
     "name": "maplibre-nextjs-ts-starter",
     "description": "A TypeScript starter for interactive MapLibre applications in Next.js. It demonstrates two marker-rendering approaches: custom React markers and native GeoJSON layers. Category-based clustering, popups, map controls, and shared application state support the development of customized mapping interfaces.",

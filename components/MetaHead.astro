@@ -5,9 +5,19 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString()
 ---
 
 <head>
+  <title>{Astro.props.title}</title>
+  <meta name="description" content={Astro.props.description}>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="canonical" href={canonicalUrl}>
+
+  <meta
+    name="robots"
+    content={Astro.props.robots === false
+      ? 'noindex, nofollow'
+      : 'index, follow'}
+  >
+
   <link
     rel="icon"
     type="image/x-icon"
@@ -30,17 +40,16 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString()
     sizes="180x180"
     href={`${import.meta.env.BASE_URL}favicon/apple-touch-icon.png`}
   >
+
+  <!-- FONTS -->
   <link
     rel="stylesheet"
     href={`${import.meta.env.BASE_URL}fonts/noto-sans.css`}
   >
-  <title>{Astro.props.title}</title>
-  <meta name="description" content={Astro.props.description}>
-  <meta
-    name="robots"
-    content={Astro.props.robots === false
-      ? 'noindex, nofollow'
-      : 'index, follow'}
-  >
+  <link rel="preload" href={`${import.meta.env.BASE_URL}fonts/noto-sans-v42-latin-700.woff2`} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={`${import.meta.env.BASE_URL}fonts/noto-sans-v42-latin-900.woff2`} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={`${import.meta.env.BASE_URL}fonts/noto-sans-v42-latin-regular.woff2`} as="font" type="font/woff2" crossorigin>
+
+  <!-- ASTRO CLIENT ROUTER -->
   <ClientRouter />
 </head>

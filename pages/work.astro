@@ -26,7 +26,7 @@ const data: Project[] = await response.json()
 <AppShell title="Discover my open source projects and contributions" description="A collection of my open source projects and contributions.">
   <PixiStage>
     <LayoutComponent class="z-2">
-      <div class="prose-headings:my-0 pt-16 mb-16">
+      <div class="prose-headings:my-0 pt-16 mb-16 min-h-[40dvh] flex flex-col justify-center">
         <Headline variant="ultra" class="pixi-hitbox inline-block"
           >Open Source</Headline
         >
@@ -35,11 +35,11 @@ const data: Project[] = await response.json()
           variant="h4"
           class="pixi-hitbox inline-block font-normal!"
         >
-          Only grown-up (kinda) projects sitting here. Visit my github profile
+          Only selected projects sitting here. Visit my github profile
           for more open source projects and contributions.
         </Headline>
       </div>
-      <div class="prose-headings:my-0 pixi-deadzone">
+      <div class="prose-headings:my-0 pixi-hitbox">
         {data &&
           data.length > 0 &&
           data.map((project, i) => (
@@ -66,6 +66,9 @@ const data: Project[] = await response.json()
               <div class="bg-base-muted-superlight rounded-box border-2 border-base-muted-light overflow-hidden shadow-lg shadow-base-200">
                 {project?.images && project.images.length > 0 && (
                   <img
+                    width={500}
+                    height={300}
+                    loading={i > 2 ? "lazy" : "eager"}
                     src={`/work/${project.images[0]}`}
                     alt={project.name}
                     class="w-full h-full object-cover rounded"
@@ -83,7 +86,7 @@ const data: Project[] = await response.json()
         </ul>
       </div>
     </LayoutComponent>
-    <div class="bg-base-200">
+    <div class="bg-primary-muted-superlight">
       <LayoutComponent>
         <Headline variant="ultra" class="pixi-hitbox inline-block">
           What about the business?
