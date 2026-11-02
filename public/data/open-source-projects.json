@@ -99,26 +99,6 @@
     "images": ["maplibre-nextjs-ts-starter.webp"]
   },
   {
-    "id": "astro-maplibre",
-    "name": "astro-maplibre",
-    "description": "A multilingual place explorer combining statically generated Astro pages with an interactive MapLibre map. Category views and place details share a map that persists across client navigation. Camera framing adapts to content overlays, while validated JSON data is loaded during the build.",
-    "technologies": [
-      "Astro",
-      "TypeScript",
-      "MapLibre GL JS",
-      "Astro View Transitions",
-      "Zod",
-      "Tailwind CSS",
-      "DaisyUI"
-    ],
-    "developmentFocus": "Geospatial frontend development, static site architecture, build-time data validation, and map navigation.",
-    "repositoryUrl": "https://github.com/richard-unterberg/astro-maplibre",
-    "website": "https://richard-unterberg.github.io/astro-maplibre/map/",
-    "notes": ["Ongoing work."],
-    "images": ["astro-maplibre.webp"]
-  },
-  
-  {
     "id": "convert-to-arrow",
     "name": "convert-to-arrow",
     "description": "A command-line codemod for converting JavaScript and TypeScript function declarations into arrow functions. Built on ts-morph, it preserves type annotations and generics, handles exports, and skips selected cases where conversion could alter behavior or produce invalid code. Optional reports explain skipped conversions.",
