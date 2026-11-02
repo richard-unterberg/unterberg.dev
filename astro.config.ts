@@ -6,7 +6,6 @@ import { defineConfig } from 'astro/config'
 export default defineConfig({
   site: 'https://unterberg.dev/',
   trailingSlash: 'always',
-  srcDir: '.',
   integrations: [
     marmo(),
     astroBeastiesOutput({

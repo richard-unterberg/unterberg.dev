@@ -16,10 +16,10 @@ registerHooks({
   },
 })
 
-const { createConfig, normalizeConfig } = await import('../lib/pixiStage/config.ts')
-const { createComets } = await import('../lib/pixiStage/comets.ts')
-const { createInput } = await import('../lib/pixiStage/input.ts')
-const { createPathPlayer } = await import('../lib/pixiStage/pathPlayer.ts')
+const { createConfig, normalizeConfig } = await import('../src/lib/pixiStage/config.ts')
+const { createComets } = await import('../src/lib/pixiStage/comets.ts')
+const { createInput } = await import('../src/lib/pixiStage/input.ts')
+const { createPathPlayer } = await import('../src/lib/pixiStage/pathPlayer.ts')
 
 const setup = () => {
   const config = createConfig()

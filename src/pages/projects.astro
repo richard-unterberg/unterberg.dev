@@ -36,30 +36,31 @@ const groupedEntries = data.filter((item) => item.group)
   <PixiStage>
     <LayoutComponent class="z-2">
       <div
-        class="prose-headings:my-0 pt-16 mb-16 min-h-[40dvh] flex flex-col justify-center"
+        class="prose-headings:my-0 pt-16 mb-16 min-h-[50dvh] flex flex-col justify-center"
       >
-        <span class="text-primary">Contributions</span>
-        <Headline variant="ultra" class="pixi-hitbox inline-block">
-          Open Source
+        <span class="text-primary pixi-hitbox">Contributions</span>
+        <Headline variant="ultra" class="inline-block">
+          <span class="pixi-hitbox">Open Source</span>
         </Headline>
         <Headline
           as="p"
           variant="h4"
-          class="pixi-hitbox inline-block font-normal!"
+          class="inline-block font-normal!"
         >
-          Only selected projects sitting here.<br>
-          Visit my github profile for more open source projects and
-          contributions.
+          <span class="pixi-hitbox w-3/4 inline-block">
+          It often started with a problem. For some of them I found shareworthy solutions. Only some of them were selected for this overview. 
+          Visit my github profile for more open source projects and contributions.
+          </span>
         </Headline>
       </div>
       <div class="prose-headings:my-0 pixi-hitbox">
         {normalEntries &&
           normalEntries.length > 0 &&
           normalEntries.map((project, i) => (
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mb-24">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mb-32">
               <div
                 class={maMerge(
-                  'min-h-90 flex flex-col gap-5',
+                  'min-h-100 flex flex-col gap-5',
                   i % 2 === 0 && 'lg:order-last',
                 )}
               >
@@ -68,13 +69,7 @@ const groupedEntries = data.filter((item) => item.group)
                   {project.developmentFocus}
                 </Headline>
                 <p class="flex-1">{project.description}</p>
-                <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
-                  {project.technologies.map((tech) => (
-                    <li class="badge badge-primary badge-soft badge-sm">
-                      {tech}
-                    </li>
-                  ))}
-                </ul>
+                
                 <div class="flex gap-2 items-center">
                   <a
                     href={project.repositoryUrl}
@@ -99,13 +94,14 @@ const groupedEntries = data.filter((item) => item.group)
                   )}
                 </div>
               </div>
-              <div class="bg-base-muted-superlight rounded-box border-2 border-base-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
+              <div class="relative bg-base-muted-superlight rounded-box border-2 border-base-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
                 {project?.images && project.images.length > 0 && (
                   <a
                     href={project?.website || project?.repositoryUrl || '#'}
                     target="_blank"
                     rel="noreferrer"
                     aria-label="Visit the project repo"
+                    class="absolute inset-0 z-4"
                   >
                     <img
                       width={500}
@@ -117,13 +113,20 @@ const groupedEntries = data.filter((item) => item.group)
                     />
                   </a>
                 )}
+                <ul class="absolute bottom-0 left-0 not-prose gap-2 flex flex-wrap justify-end w-full z-4 p-4">
+                  {project.technologies.map((tech) => (
+                    <li class="badge badge-accent badge-soft">
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           ))}
-        <span class="text-primary mt-20">Work</span>
-        <H2Headline variant="h1" class="mb-20!">Other OSS Tools</H2Headline>
+        <span class="text-primary mt-20">Open Source</span>
+        <H2Headline variant="h1" class="mb-10!">Other Tools</H2Headline>
         {groupedEntries && groupedEntries.length >= 0 && (
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mt-16">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mt-12">
             {groupedEntries.map((project) => (
               <div class="min-h-30 flex flex-col gap-5 bg-primary-muted-superlight p-8 xl:p-12 rounded-box border-2 border-primary-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
                 <H2Headline variant="h3">{project.name}</H2Headline>

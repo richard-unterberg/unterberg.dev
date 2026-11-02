@@ -1,4 +1,4 @@
 {
   "$schema": "./node_modules/knip/schema.json",
-  "ignore": ["./public/fonts/noto-sans.css", "./components/Headline.astro"]
+  "ignore": ["./public/fonts/noto-sans.css", "./src/components/Headline.astro"]
 }

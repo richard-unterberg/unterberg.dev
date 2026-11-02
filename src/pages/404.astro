@@ -1,0 +1,17 @@
+---
+import { H1Headline } from '@components/Headline.astro'
+import LayoutComponent from '@components/LayoutComponent.astro'
+import Shell from '@layouts/AppShell.astro'
+import CleanLayout from '@layouts/CleanLayout.astro'
+---
+
+<Shell title="Oh no an 404 occured">
+  <CleanLayout>
+    <LayoutComponent class="text-center">
+      <H1Headline>Oh no - a 404 happened</H1Headline>
+      <div class="inline-flex gap-1 items-center mx-auto">
+        <a class="btn btn-neutral btn-lg" href="/">Back to start</a>
+      </div>
+    </LayoutComponent>
+  </CleanLayout>
+</Shell>

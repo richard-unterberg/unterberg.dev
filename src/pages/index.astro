@@ -3,7 +3,7 @@ import Headline from '@components/Headline.astro'
 import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
-import type { PageScene } from '@lib/pixiStage/scene'
+import type { PageScene } from '../lib/pixiStage/scene'
 
 const scene = {
   paths: {
@@ -33,8 +33,8 @@ const scene = {
           and I like to build modern websites and interfaces ✌️.
         </p>
         <div class="flex gap-4 justify-center items-center">
-          <a href="/work/" class="btn btn-neutral btn-lg pixi-deadzone">
-            See my work
+          <a href="/projects/" class="btn btn-neutral btn-lg pixi-deadzone">
+            See my projects
           </a>
           <a
             href="/contact/"

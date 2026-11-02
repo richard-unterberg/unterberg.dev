@@ -9,7 +9,9 @@ interface Props extends HTMLAttributes<'h1'> {
   variant?: HeadlineElement
 }
 
-const createHeadlineComponent = (level: Exclude<HeadlineElement, 'p'>) => {
+export const createHeadlineComponent = (
+  level: Exclude<HeadlineElement, 'p'>,
+) => {
   return ma.h1
     .logic<Props & { $_as?: HeadlineElement }>(
       ({ as = level, variant = level }) => ({ $_as: as, variant }),

@@ -20,10 +20,11 @@
       }
     ],
     "paths": {
-      "@components/*": ["./components/*"],
-      "@layouts/*": ["./layouts/*"],
-      "@styles/*": ["./styles/*"],
-      "@lib/*": ["./lib/*"]
+      "@pixi/*": ["./src/lib/pixi/*"],
+      "@components/*": ["./src/components/*"],
+      "@layouts/*": ["./src/layouts/*"],
+      "@styles/*": ["./src/styles/*"],
+      "@lib/*": ["./src/lib/*"]
     }
   },
   "include": [".astro/types.d.ts", "**/*"],
