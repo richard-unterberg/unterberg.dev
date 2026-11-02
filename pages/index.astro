@@ -1,8 +1,8 @@
 ---
+import Headline from '@components/Headline.astro'
 import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
-import Controls from '@lib/pixiStage/Controls.astro'
 import type { PageScene } from '@lib/pixiStage/scene'
 
 const scene = {
@@ -22,35 +22,25 @@ const scene = {
   <PixiStage scene={scene}>
     <LayoutComponent
       type="small"
-      class="prose-headings:m-0 h-dvh flex items-center justify-center text-center"
+      class="prose-headings:m-0 prose-p:m-0 h-full"
     >
-      <div class="gap-y-4 flex flex-col">
-        <h1 class="text-sm font-normal pixi-deadzone text-base-muted-medium">
+      <div class="flex flex-col text-center justify-center items-center min-h-full">
+        <p class="text-base-muted">
           Web & Software Development
-        </h1>
-        <h2 class="text-7xl font-black  pixi-hitbox">Hello together</h2>
-        <p class="text-xl pixi-hitbox w-2/3 mx-auto">
-          I'm Richard, a professional web- & typescript developer from germany and I like to build modern websites and interfaces. ✌️
         </p>
-        <a href="/work/" class="btn btn-neutral w-fit mx-auto pixi-deadzone">
-          See my work
-        </a>
+        <Headline variant="ultra" class="font-black  pixi-hitbox relative z-4">Hello together</Headline>
+        <p class="text-xl pixi-hitbox w-2/3 mx-auto">
+          I'm Richard, a professional web- & typescript developer from germany and I like to build modern websites and interfaces ✌️.
+        </p>
+        <div class="flex gap-4 justify-center items-center">
+          <a href="/work/" class="btn btn-neutral btn-lg pixi-deadzone">
+            See my work
+          </a>
+          <a href="/contact/" class="btn btn-neutral btn-outline btn-lg pixi-deadzone">
+            Contact me
+          </a>
+        </div>
       </div>
-    </LayoutComponent>
-    <LayoutComponent class="space-y-8 pb-16">
-      <div class="grid gap-4 sm:grid-cols-2">
-        <section class="pixi-hitbox rounded-box border border-base-300 p-5">
-          <h2 class="text-lg font-bold">Hitbox: softer particles</h2>
-          <p>Move here for smaller, quieter sprites with less drift.</p>
-        </section>
-        <section
-          class="pixi-deadzone rounded-box border border-base-300 bg-base-100/95 p-5"
-        >
-          <h2 class="text-lg font-bold">Deadzone: no new particles</h2>
-          <p>Pointer, autoplay, and comet emissions stop inside this area.</p>
-        </section>
-      </div>
-      <Controls id="home-pixi-settings" />
     </LayoutComponent>
   </PixiStage>
 </AppShell>

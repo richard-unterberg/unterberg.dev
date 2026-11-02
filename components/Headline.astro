@@ -1,0 +1,47 @@
+---
+import ma from '@marmo/astro'
+import type { HTMLAttributes } from 'astro/types'
+
+export type HeadlineElement = 'ultra' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p'
+
+export interface Props extends HTMLAttributes<'h1'> {
+  as?: HeadlineElement
+  variant?: HeadlineElement
+}
+
+export function createHeadlineComponent(level: Exclude<HeadlineElement, 'p'>) {
+  return ma.h1
+    .logic<Props & { $_as?: HeadlineElement }>(
+      ({ as = level, variant = level }) => ({ $_as: as, variant }),
+    )
+    .variants<object, { as?: HeadlineElement; variant?: HeadlineElement }>({
+      variants: {
+        // Register `as` so Marmo consumes it instead of rendering an HTML attribute.
+        as: {},
+        variant: {
+          ultra: 'text-7xl font-black',
+          h1: 'text-5xl font-bold tracking-tight',
+          h2: 'text-4xl font-bold',
+          h3: 'text-3xl font-bold',
+          h4: 'text-2xl font-bold',
+          h5: 'text-xl font-bold',
+          h6: 'text-lg font-bold',
+          p: 'text-base font-normal',
+        },
+      },
+    })
+}
+
+export const H1Headline = createHeadlineComponent('h1')
+export const H2Headline = createHeadlineComponent('h2')
+export const H3Headline = createHeadlineComponent('h3')
+export const H4Headline = createHeadlineComponent('h4')
+export const H5Headline = createHeadlineComponent('h5')
+export const H6Headline = createHeadlineComponent('h6')
+
+const { as = 'h1', variant = as, ...attributes } = Astro.props
+---
+
+<H1Headline as={as} variant={variant} {...attributes}>
+  <slot />
+</H1Headline>

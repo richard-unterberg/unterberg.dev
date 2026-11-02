@@ -22,3 +22,36 @@ const { type, class: className, ...attributes } = Astro.props
 <div {...attributes} class={layoutClass({ type, class: className })}>
   <slot />
 </div>
+
+<!-- 
+
+// import cm from "@classmatejs/solid"
+
+// type LayoutSize = "xxs" | "xs" | "sm" | "md" | "lg"
+
+// export const layoutComponentSizeMapping = {
+//   xxs: "max-w-[480px]",
+//   xs: "max-w-[768px]",
+//   sm: "max-w-[1000px]",
+//   md: "max-w-[1480px]",
+//   lg: "max-w-[1800px]",
+// } as const
+
+// interface LayoutComponentProps {
+//   $size?: LayoutSize
+//   $noGrow?: boolean
+// }
+
+// const LayoutComponent = cm.div.variants<LayoutComponentProps>({
+//   base: ({ $noGrow }) => ($noGrow ? "" : "m-auto w-full px-4"),
+//   variants: {
+//     $size: layoutComponentSizeMapping,
+//   },
+//   defaultVariants: {
+//     $size: LayoutSize.lg,
+//   },
+// })
+
+// export default LayoutComponent
+
+-->

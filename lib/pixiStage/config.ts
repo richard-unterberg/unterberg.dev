@@ -34,7 +34,7 @@ export const PixiConfig = {
   skewTo: range('Ending skew', [-0.2, 0.2], -2, 2, 0.01, 'rad'),
   rotationIn: range('Rotation', [-160, 160], -360, 360, 1, '°'),
   pixelSpread: range('Outward spread', [0, 10], 0, 150, 1, 'px'),
-  tailOpacity: single('Tail opacity', 0.2, 0, 0.4, 0.01),
+  tailOpacity: single('Tail opacity', 0.1, 0, 0.3, 0.01),
   tailMissRate: single('Tail miss rate', 0.9, 0.7, 1, 0.01),
   tileScrollLag: single('Tile scroll lag', 10, 0, 400, 10, 'ms'),
   cloudScrollLag: single('Cloud scroll lag', 20, 0, 400, 10, 'ms'),
