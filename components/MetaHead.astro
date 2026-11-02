@@ -30,6 +30,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString()
     sizes="180x180"
     href={`${import.meta.env.BASE_URL}favicon/apple-touch-icon.png`}
   >
+  <link
+    rel="stylesheet"
+    href={`${import.meta.env.BASE_URL}fonts/noto-sans.css`}
+  >
   <title>{Astro.props.title}</title>
   <meta name="description" content={Astro.props.description}>
   <meta

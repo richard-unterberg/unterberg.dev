@@ -81,7 +81,7 @@
     var(--color-primary) 5%,
     transparent
   );
-  --font-sans: 'Helvetica Neue', 'Arial', sans-serif;
+  --font-sans: 'Noto Sans', 'Helvetica Neue', 'Arial', sans-serif;
   --font-mono:
     'Monaco', 'SF Mono', SF Mono, SF Mono Regular, Consolas, 'Liberation Mono',
     Menlo, Courier, monospace;
