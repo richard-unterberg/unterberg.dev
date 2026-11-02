@@ -1,4 +1,5 @@
 ---
+import GithubIcon from '@components/icons/GithubIcon.astro';
 import LayoutComponent from '@components/LayoutComponent.astro'
 import SettingsButton from '@components/SettingsButton.astro'
 import { FaceSlightlySmiling } from '@lucide/astro'
@@ -13,6 +14,11 @@ import { FaceSlightlySmiling } from '@lucide/astro'
         <h2 class="text-xs font-normal text-base-muted">Richard Unterberg</h2>
       </span>
     </a>
-    <SettingsButton />
+    <div class="flex gap-2 items-center">
+      <SettingsButton />
+      <a href="https://github.com/richard-unterberg" class="btn btn-sm" aria-label="Visit my Github profile">
+        <GithubIcon class="size-4" />
+      </a>
+    </div>
   </LayoutComponent>
 </header>

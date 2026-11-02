@@ -1,5 +1,5 @@
 ---
-import Headline, { H2Headline, H3Headline } from '@components/Headline.astro'
+import Headline, { H2Headline } from '@components/Headline.astro'
 import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
@@ -13,7 +13,7 @@ type Project = {
   developmentFocus: string
   additionalLinks: string[]
   repositoryUrl: string
-  notes: string[],
+  notes: string[]
   images?: string[]
 }
 
@@ -21,13 +21,12 @@ const response = await fetch(
   'https://raw.githubusercontent.com/richard-unterberg/unterberg.dev/refs/heads/main/public/data/open-source-projects.json',
 )
 const data: Project[] = await response.json()
-console.log(data)
 ---
 
-<AppShell>
+<AppShell title="Discover my open source projects and contributions" description="A collection of my open source projects and contributions.">
   <PixiStage>
     <LayoutComponent class="z-2">
-      <div class="prose-headings:my-0 pt-16">
+      <div class="prose-headings:my-0 pt-16 mb-16">
         <Headline variant="ultra" class="pixi-hitbox inline-block"
           >Open Source</Headline
         >
@@ -36,53 +35,45 @@ console.log(data)
           variant="h4"
           class="pixi-hitbox inline-block font-normal!"
         >
-          Only grown-up projects sitting here. Visit my github profile for more
-          open source projects and contributions.
+          Only grown-up (kinda) projects sitting here. Visit my github profile
+          for more open source projects and contributions.
         </Headline>
       </div>
       <div class="prose-headings:my-0 pixi-deadzone">
         {data &&
-            data.length > 0 &&
-            data.map((project, i) => (
-              <div class="grid grid-cols-2 gap-10 mb-10">
-                <div
-                  class={maMerge(
-                    "min-h-90 flex flex-col gap-5",
-                    i % 2 === 0 && "order-last",
-                  )}
-                >
-                  <H2Headline variant="h3">{project.name}</H2Headline>
-                  <Headline as="h3" variant="p" class="">
-                    {project.developmentFocus}
-                  </Headline>
-                  <p class="flex-1">{project.description}</p>
-                  <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
-                    {project.technologies.map((tech) => (
-                      <li class="badge badge-primary badge-soft badge-sm">
-                        {tech}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div class="bg-base-muted-superlight rounded">
-                  {project?.images && project.images.length > 0 && (
-                    <img
-                      src={`/work/${project.images[0]}`}
-                      alt={project.name}
-                      class="w-full h-full object-cover rounded"
-                    />
-                  )}
-                </div>
+          data.length > 0 &&
+          data.map((project, i) => (
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+              <div
+                class={maMerge(
+                  'min-h-90 flex flex-col gap-5',
+                  i % 2 === 0 && 'lg:order-last',
+                )}
+              >
+                <H2Headline variant="h3">{project.name}</H2Headline>
+                <Headline as="h3" variant="p" class="">
+                  {project.developmentFocus}
+                </Headline>
+                <p class="flex-1">{project.description}</p>
+                <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
+                  {project.technologies.map((tech) => (
+                    <li class="badge badge-primary badge-soft badge-sm">
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
-        <Headline variant="ultra" class="pixi-hitbox inline-block">
-          Business
-        </Headline>
-        <ul>
-          <li>demon-designs.de</li>
-          <li>diefabrik.de</li>
-          <li>unterberg.dev</li>
-        </ul>
+              <div class="bg-base-muted-superlight rounded-box border-2 border-base-muted-light overflow-hidden shadow-lg shadow-base-200">
+                {project?.images && project.images.length > 0 && (
+                  <img
+                    src={`/work/${project.images[0]}`}
+                    alt={project.name}
+                    class="w-full h-full object-cover rounded"
+                  />
+                )}
+              </div>
+            </div>
+          ))}
         <Headline variant="ultra" class="pixi-hitbox inline-block">
           Aside
         </Headline>
@@ -92,5 +83,17 @@ console.log(data)
         </ul>
       </div>
     </LayoutComponent>
+    <div class="bg-base-200">
+      <LayoutComponent>
+        <Headline variant="ultra" class="pixi-hitbox inline-block">
+          What about the business?
+        </Headline>
+        <p>
+          This website represents my personal work and projects. I am only
+          partially open to freelance work, collaborations, and consulting
+          opportunities. We can talk about in person. I can fix your problem.
+        </p>
+        </LayoutComponent>
+      </div>
   </PixiStage>
 </AppShell>
