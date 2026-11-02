@@ -34,9 +34,7 @@
     "developmentFocus": "Documentation tooling, graph-based information architecture, static site generation, and developer experience.",
     "repositoryUrl": "https://github.com/richard-unterberg/nivel",
     "additionalLinks": [],
-    "notes": [
-      "Public alpha."
-    ]
+    "notes": ["Public alpha."]
   },
   {
     "id": "vike-landing-page",
@@ -105,9 +103,7 @@
     "developmentFocus": "Geospatial frontend development, static site architecture, build-time data validation, and map navigation.",
     "repositoryUrl": "https://github.com/richard-unterberg/astro-maplibre",
     "additionalLinks": [],
-    "notes": [
-      "Ongoing work."
-    ]
+    "notes": ["Ongoing work."]
   },
   {
     "id": "leaflet-nextjs-ts-starter",
@@ -170,12 +166,7 @@
     "id": "convert-to-arrow",
     "name": "convert-to-arrow",
     "description": "A command-line codemod for converting JavaScript and TypeScript function declarations into arrow functions. Built on ts-morph, it preserves type annotations and generics, handles exports, and skips selected cases where conversion could alter behavior or produce invalid code. Optional reports explain skipped conversions.",
-    "technologies": [
-      "TypeScript",
-      "Node.js",
-      "ts-morph",
-      "TypeScript AST"
-    ],
+    "technologies": ["TypeScript", "Node.js", "ts-morph", "TypeScript AST"],
     "developmentFocus": "Developer tooling, automated refactoring, static analysis, and JavaScript/TypeScript code transformation.",
     "repositoryUrl": "https://github.com/richard-unterberg/convert-to-arrow",
     "additionalLinks": [],

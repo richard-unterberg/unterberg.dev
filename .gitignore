@@ -1,6 +1,7 @@
 .astro
 node_modules
 dist
+.pnpm-store
 .env
 
 .openagent

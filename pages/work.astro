@@ -1,38 +1,68 @@
 ---
-import LayoutComponent from '@components/LayoutComponent.astro';
+import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
+import { maMerge } from '@marmo/astro'
 
-const response = await fetch("/open-source-projects.json");
-const data = await response.json();
-const projects = data.results[0];
+type Project = {
+  id: string
+  name: string
+  description: string
+  technologies: string[]
+  developmentFocus: string
+  additionalLinks: string[]
+  repositoryUrl: string
+  notes: string[]
+}
+
+const response = await fetch(
+  'https://raw.githubusercontent.com/richard-unterberg/unterberg.dev/refs/heads/main/public/data/open-source-projects.json',
+)
+const data: Project[] = await response.json()
+console.log(data)
 ---
 
 <AppShell>
   <PixiStage>
-    <LayoutComponent class="pixi-hitbox">
-    <ul>
-      <li>marmo</li>
-      <li>nivel</li>
-      <li>vike's startpage</li>
-      <li>vite-beasties-output</li>
-      <li>astro-maplibre</li>
-      <li>leaflet-nextjs-ts-starter</li>
-      <li>maplibre-vike</li>
-      <li>maplibre-nextjs-ts-starter</li>
-      <li>convert-to-arrow</li>
-    </ul>
+    <LayoutComponent>
+      <h1 class="text-7xl pixi-hitbox">Some Projects</h1>
+      <div class="grid grid-cols-1 prose-headings:my-0 pixi-deadzone">
+        {data &&
+          data.length > 0 &&
+          data.map((project, i) => (
+            <div class="grid grid-cols-2">
+              <div
+                class={maMerge(
+                  'min-h-60 flex flex-col',
+                  i % 2 === 0 && 'order-last',
+                )}
+              >
+                <h2 class="text-3xl mb-4!">{project.name}</h2>
+                <h3 class="text-lg mb-10!">{project.developmentFocus}</h3>
+                <p class="flex-1">{project.description}</p>
+                <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
+                  {project.technologies.map((tech) => (
+                    <li class="badge badge-primary badge-soft badge-sm">
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div class="bg-base-muted-superlight rounded">123</div>
+            </div>
+          ))}
+      </div>
 
-    <ul>
-      <li>demon-designs.de</li>
-      <li>diefabrik.de</li>
-      <li>unterberg.dev</li>
-    </ul>
+      <ul>
+        <li>demon-designs.de</li>
+        <li>diefabrik.de</li>
+        <li>unterberg.dev</li>
+      </ul>
 
-    <ul>
-      <li>soup-station</li>
-      <li>music: return false</li>
-    </ul>
+      <ul>
+        <li>soup-station</li>
+        <li>music: return false</li>
+      </ul>
     </LayoutComponent>
   </PixiStage>
 </AppShell>
