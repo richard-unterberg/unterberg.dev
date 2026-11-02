@@ -11,7 +11,7 @@
       "tailwind-merge"
     ],
     "developmentFocus": "Frontend library development, typed component APIs, reusable UI architecture, and styling ergonomics.",
-    "additionalLinks": [],
+    "website": "https://richard-unterberg.github.io/marmo/",
     "repositoryUrl": "https://github.com/richard-unterberg/marmo",
     "notes": [],
     "images": ["marmo.webp"]
@@ -34,20 +34,7 @@
     ],
     "developmentFocus": "Creative frontend development, interaction design, responsive interfaces, web animation, and visual communication of technical concepts.",
     "repositoryUrl": "https://github.com/vikejs/vike",
-    "additionalLinks": [
-      {
-        "label": "Official landing-page source",
-        "url": "https://github.com/vikejs/vike/tree/main/docs/pages/index"
-      },
-      {
-        "label": "Personal fork",
-        "url": "https://github.com/richard-unterberg/vike2"
-      },
-      {
-        "label": "Merged landing-page PR #3073",
-        "url": "https://github.com/vikejs/vike/pull/3073"
-      }
-    ],
+    "website": "https://vike.dev/",
     "notes": [
       "Landing-page contribution within Vike's shared repository; merged in PR #3073."
     ],
@@ -71,7 +58,7 @@
     ],
     "developmentFocus": "Documentation tooling, graph-based information architecture, static site generation, and developer experience.",
     "repositoryUrl": "https://github.com/richard-unterberg/nivel",
-    "additionalLinks": [],
+    "website": "https://nivel-docs.de/",
     "notes": ["Public alpha."],
     "images": ["nivel.webp"]
   },
@@ -88,7 +75,6 @@
     ],
     "developmentFocus": "Frontend performance, critical CSS, build tooling, and framework integration.",
     "repositoryUrl": "https://github.com/richard-unterberg/vite-beasties-output",
-    "additionalLinks": [],
     "notes": [],
     "group": true
   },
@@ -107,7 +93,7 @@
     ],
     "developmentFocus": "Geospatial frontend development, static site architecture, build-time data validation, and map navigation.",
     "repositoryUrl": "https://github.com/richard-unterberg/astro-maplibre",
-    "additionalLinks": [],
+    "website": "https://richard-unterberg.github.io/astro-maplibre/map/",
     "notes": ["Ongoing work."],
     "images": ["astro-maplibre.webp"]
   },
@@ -127,7 +113,7 @@
     ],
     "developmentFocus": "Geospatial frontend architecture, marker rendering, clustering, and the trade-offs between customization and rendering performance.",
     "repositoryUrl": "https://github.com/richard-unterberg/maplibre-nextjs-ts-starter",
-    "additionalLinks": [],
+    "website": "https://maplibre-nextjs-ts-starter.vercel.app/",
     "notes": [],
     "images": ["maplibre-nextjs-ts-starter.webp"]
   },

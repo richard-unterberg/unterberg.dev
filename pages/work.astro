@@ -1,8 +1,10 @@
 ---
 import Headline, { H2Headline } from "@components/Headline.astro";
+import GithubIcon from "@components/icons/GithubIcon.astro";
 import LayoutComponent from "@components/LayoutComponent.astro";
 import AppShell from "@layouts/AppShell.astro";
 import PixiStage from "@layouts/PixiStage.astro";
+import { SquareArrowOutUpRight } from "@lucide/astro";
 import { maMerge } from "@marmo/astro";
 
 type Project = {
@@ -11,7 +13,7 @@ type Project = {
   description: string;
   technologies: string[];
   developmentFocus: string;
-  additionalLinks: string[];
+  website?: string;
   repositoryUrl: string;
   notes: string[];
   images?: string[];
@@ -22,6 +24,9 @@ const response = await fetch(
   "https://raw.githubusercontent.com/richard-unterberg/unterberg.dev/refs/heads/main/public/data/open-source-projects.json",
 );
 const data: Project[] = await response.json();
+
+const normalEntries = data.filter((item) => !item.group);
+const groupedEntries = data.filter((item) => item.group);
 ---
 
 <AppShell
@@ -47,10 +52,10 @@ const data: Project[] = await response.json();
       </div>
       <div class="prose-headings:my-0 pixi-hitbox">
         {
-          data &&
-            data.length > 0 &&
-            data.filter(item => !item.group).map((project, i) => (
-              <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+          normalEntries &&
+            normalEntries.length > 0 &&
+            normalEntries.map((project, i) => (
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mb-20">
                 <div
                   class={maMerge(
                     "min-h-90 flex flex-col gap-5",
@@ -62,6 +67,30 @@ const data: Project[] = await response.json();
                     {project.developmentFocus}
                   </Headline>
                   <p class="flex-1">{project.description}</p>
+                  <p class="flex flex-1 gap-2 items-center">
+                    <a
+                      href={project.repositoryUrl}
+                      class="btn btn-neutral btn-outline"
+                      aria-label="Visit my Github profile"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <GithubIcon class="size-4" /> See Project on Github
+                    </a>
+                    {project?.website && (
+                      <a
+                        href={project.website}
+                        class="btn btn-neutral"
+                        aria-label="See the website or demo of the project"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        <SquareArrowOutUpRight class="size-4" /> See demo /
+                        official page
+                      </a>
+                    )}
+                  </p>
+
                   <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
                     {project.technologies.map((tech) => (
                       <li class="badge badge-primary badge-soft badge-sm">
@@ -72,42 +101,98 @@ const data: Project[] = await response.json();
                 </div>
                 <div class="bg-base-muted-superlight rounded-box border-2 border-base-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
                   {project?.images && project.images.length > 0 && (
-                    <img
-                      width={500}
-                      height={300}
-                      loading={i > 2 ? "lazy" : "eager"}
-                      src={`/work/${project.images[0]}`}
-                      alt={project.name}
-                      class="w-full h-full object-cover rounded"
-                    />
+                    <a
+                      href={project.repositoryUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label="Visit the project repo"
+                    >
+                      <img
+                        width={500}
+                        height={300}
+                        loading={i > 2 ? "lazy" : "eager"}
+                        src={`/work/${project.images[0]}`}
+                        alt={project.name}
+                        class="w-full h-full object-cover rounded"
+                      />
+                    </a>
                   )}
                 </div>
               </div>
             ))
         }
-        <Headline variant="ultra" class="pixi-hitbox inline-block">
-          Aside
-        </Headline>
-        <ul>
-          <li>soup-station</li>
-          <li>music: return false</li>
-        </ul>
+        <H2Headline variant="h1" class="my-20!">Other OSS Tools</H2Headline>
+        {
+          groupedEntries && groupedEntries.length >= 0 && (
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mt-16">
+              {groupedEntries.map((project, i) => (
+                <div class="min-h-40 flex flex-col gap-5 bg-primary-muted-superlight p-8 xl:p-12 rounded-box border-2 border-primary-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
+                  <H2Headline variant="h3">{project.name}</H2Headline>
+                  <Headline as="h3" variant="p" class="min-h-15 w-3/4">
+                    {project.developmentFocus}
+                  </Headline>
+                  <p class="flex-1">{project.description}</p>
+                  <p>
+                    <a
+                      href={project.repositoryUrl}
+                      class="btn btn-neutral"
+                      aria-label="Visit my Github profile"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <GithubIcon class="size-4" /> See Project on Github
+                    </a>
+                  </p>
+                  <ul class="not-prose gap-2 flex flex-wrap justify-start w-3/4">
+                    {project.technologies.map((tech) => (
+                      <li class="badge badge-secondary badge-soft badge-sm">
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )
+        }
       </div>
     </LayoutComponent>
+    <LayoutComponent
+      class="flex justify-between prose-headings:my-0 my-20 border-y border-base-muted-light py-20 pixi-hitbox"
+    >
+      <H2Headline class="">More OSS projects?</H2Headline>
+      <a
+        href="https://github.com/richard-unterberg"
+        class="btn btn-xl btn-outline btn-primary"
+        ><GithubIcon class="size-7" /> My Github Profile</a
+      >
+    </LayoutComponent>
+    <LayoutComponent>
+      <Headline variant="ultra" class="pixi-hitbox inline-block">
+        Aside
+      </Headline>
+      <ul>
+        <li>soup-station</li>
+        <li>music: return false</li>
+      </ul>
+    </LayoutComponent>
     <div class="bg-primary-muted-superlight">
-      <LayoutComponent $size="sm" class="prose-headings:my-0 pt-16 mb-16 min-h-[40dvh] flex flex-col justify-center text-center">
-          <Headline variant="ultra" class="pixi-hitbox inline-block">
-            What about the business?
-          </Headline>
-          <Headline
-            as="p"
-            variant="h4"
-            class="pixi-hitbox inline-block font-normal!"
-          >
-            This website represents my personal work and projects. I am only
-            partially open to freelance work, collaborations and consulting
-            opportunities.
-          </Headline>
+      <LayoutComponent
+        $size="sm"
+        class="prose-headings:my-0 pt-16 mb-16 min-h-[40dvh] flex flex-col justify-center text-center"
+      >
+        <Headline variant="ultra" class="pixi-hitbox inline-block">
+          What about the business?
+        </Headline>
+        <Headline
+          as="p"
+          variant="h4"
+          class="pixi-hitbox inline-block font-normal!"
+        >
+          This website represents my personal work and projects. I am only
+          partially open to freelance work, collaborations and consulting
+          opportunities.
+        </Headline>
       </LayoutComponent>
     </div>
   </PixiStage>
