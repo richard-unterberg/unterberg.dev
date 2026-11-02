@@ -11,11 +11,19 @@ const isStartOrSettingsPage = isSettingsOpen || isStartPage
 {isStartOrSettingsPage && (
   <div>
     {isSettingsOpen ? (
-      <a href="/" class="btn btn-warning btn-sm" aria-label="Close settings and return to start page">
+      <a
+        href="/"
+        class="btn btn-warning btn-sm"
+        aria-label="Close settings and return to start page"
+      >
         <X class="size-4" />
       </a>
     ) : (
-      <a href="/settings/" class="btn btn-base btn-sm" aria-label="Open settings page">
+      <a
+        href="/settings/"
+        class="btn btn-base btn-sm"
+        aria-label="Open settings page"
+      >
         <Sparkles class="size-4" />
       </a>
     )}

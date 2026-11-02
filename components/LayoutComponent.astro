@@ -2,7 +2,7 @@
 import ma from '@marmo/astro'
 import type { HTMLAttributes } from 'astro/types'
 
-export const layoutComponentSizeMapping = {
+const layoutComponentSizeMapping = {
   xxs: 'max-w-[480px]',
   xs: 'max-w-[768px]',
   sm: 'max-w-[1000px]',
@@ -10,9 +10,9 @@ export const layoutComponentSizeMapping = {
   lg: 'max-w-[1800px]',
 } as const
 
-export type LayoutSize = keyof typeof layoutComponentSizeMapping
+type LayoutSize = keyof typeof layoutComponentSizeMapping
 
-export interface Props extends HTMLAttributes<'div'> {
+interface Props extends HTMLAttributes<'div'> {
   $size?: LayoutSize
   $noGrow?: boolean
 }

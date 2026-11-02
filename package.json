@@ -35,7 +35,6 @@
     "@types/node": "^26.6.6",
     "@unterberg/vite-beasties-output": "^0.2.0",
     "astro": "^7.4.4",
-    "cva": "1.0.0-beta.12",
     "daisyui": "^5.7.50",
     "knip": "^6.44.1",
     "tailwindcss": "^4.3.3",

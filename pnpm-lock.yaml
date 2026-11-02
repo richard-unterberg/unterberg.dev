@@ -45,9 +45,6 @@ importers:
       astro:
         specifier: ^7.4.4
         version: 7.4.4(@types/node@26.6.6)(jiti@2.7.0)(yaml@2.9.1)
-      cva:
-        specifier: 1.0.0-beta.12
-        version: 1.0.0-beta.12(typescript@6.0.3)
       daisyui:
         specifier: ^5.7.50
         version: 5.7.50
@@ -1270,14 +1267,6 @@ packages:
   csso@5.0.5:
     resolution: {integrity: sha512-0LrrStPOdJj+SPCCrGhzryycLjwcgUSHBtxNA8aIDxf0GLsRh1cKYhB00Gd1lDOS4yGH69+SNn13+TWbVHETFQ==}
     engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0, npm: '>=7.0.0'}
-
-  cva@1.0.0-beta.12:
-    resolution: {integrity: sha512-Xn85p3Jyr4oVh5t69/9uOyKlEazrYdolpXXPB1bpr5apy1MS76lde5ET/WLRk3TZNldsXnj/e4Dpyh1NXFSgUg==}
-    peerDependencies:
-      typescript: '>= 6.0.0'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
 
   daisyui@5.7.50:
     resolution: {integrity: sha512-+/LRqnTCoc7s/bJEKKwtJSwzeXCVdAmRdNmZeZzgHCaQ9PJyl7j+2V2U32GQDMyD+VDkP9e/+JGoC72Y1hLk7w==}
@@ -3364,12 +3353,6 @@ snapshots:
   csso@5.0.5:
     dependencies:
       css-tree: 2.2.1
-
-  cva@1.0.0-beta.12(typescript@6.0.3):
-    dependencies:
-      clsx: 2.1.1
-    optionalDependencies:
-      typescript: 6.0.3
 
   daisyui@5.7.50: {}
 

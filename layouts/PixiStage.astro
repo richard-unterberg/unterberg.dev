@@ -2,8 +2,16 @@
 import Stage from '@lib/pixiStage/Stage.astro'
 ---
 
-<main class="prose-container mt-16 min-h-[calc(100dvh-16*var(--spacing))] flex flex-col justify-start">
-  <div class="absolute top-0 left-0 h-[60svh] w-full bg-radial-[at_65%_-85%] from-primary-muted-light/20 to-65% dark:from-primary-muted-light/40 z-0" />
+<main
+  class="prose-container mt-16 min-h-[calc(100dvh-16*var(--spacing))] flex flex-col justify-start"
+>
+  <div
+    class="absolute w-full overflow-hidden max-w-full h-50 z-3 bg-linear-to-b from-base-100/70 -top-16 pointer-events-none"
+  />
+
+  <div
+    class="absolute top-0 left-0 h-[60svh] w-full bg-radial-[at_65%_-85%] from-primary-muted-light/20 to-65% dark:from-primary-muted-light/40 z-0"
+  />
   <slot />
 </main>
 <Stage />
