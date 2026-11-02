@@ -2,7 +2,6 @@
 import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
-import Controls from '@lib/pixiStage/Controls.astro'
 import type { PageScene } from '@lib/pixiStage/scene'
 
 const scene = {
@@ -22,13 +21,13 @@ const scene = {
   <PixiStage scene={scene}>
     <LayoutComponent
       type="small"
-      class="prose-headings:m-0 min-h-full"
+      class="prose-headings:m-0 h-full"
     >
       <div class="gap-y-4 flex flex-col text-center justify-center items-center min-h-full">
         <h1 class="text-sm font-normal pixi-deadzone text-base-muted-medium">
           Web & Software Development
         </h1>
-        <h2 class="text-7xl font-black  pixi-hitbox">Hello together</h2>
+        <h2 class="text-7xl font-black  pixi-hitbox relative z-4">Hello together</h2>
         <p class="text-xl pixi-hitbox w-2/3 mx-auto">
           I'm Richard, a professional web- & typescript developer from germany and I like to build modern websites and interfaces. ✌️
         </p>
