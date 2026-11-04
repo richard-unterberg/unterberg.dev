@@ -1,10 +1,10 @@
 ---
-import Headline, { H2Headline } from '@components/Headline.astro'
+import Headline, { H2Headline, headlineStyle } from '@components/Headline.astro'
 import GithubIcon from '@components/icons/GithubIcon.astro'
 import LayoutComponent from '@components/LayoutComponent.astro'
 import AppShell from '@layouts/AppShell.astro'
 import PixiStage from '@layouts/PixiStage.astro'
-import { SquareArrowOutUpRight } from '@lucide/astro'
+import { MoveRight, SquareArrowOutUpRight } from '@lucide/astro'
 import { maMerge } from '@marmo/astro'
 
 type Project = {
@@ -40,16 +40,14 @@ const groupedEntries = data.filter((item) => item.group)
       >
         <span class="text-primary pixi-hitbox">Contributions</span>
         <Headline variant="ultra" class="inline-block">
-          <span class="pixi-hitbox">Open Source</span>
+          <span class="pixi-hitbox">Open the source</span>
         </Headline>
-        <Headline
-          as="p"
-          variant="h4"
-          class="inline-block font-normal!"
-        >
-          <span class="pixi-hitbox w-3/4 inline-block">
-          It often started with a problem. For some of them I found shareworthy solutions. Only some of them were selected for this overview. 
-          Visit my github profile for more open source projects and contributions.
+        <Headline as="p" variant="h4" class="inline-block font-normal!">
+          <span class="pixi-hitbox lg:w-3/4 inline-block">
+            It often started with a problem. For some of them I found
+            shareworthy solutions. Only some of them were selected for this
+            overview. Visit my github profile for more open source projects and
+            contributions.
           </span>
         </Headline>
       </div>
@@ -57,10 +55,10 @@ const groupedEntries = data.filter((item) => item.group)
         {normalEntries &&
           normalEntries.length > 0 &&
           normalEntries.map((project, i) => (
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 xl:gap-10 mb-32">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-32">
               <div
                 class={maMerge(
-                  'min-h-100 flex flex-col gap-5',
+                  'lg:min-h-90 flex flex-col gap-5',
                   i % 2 === 0 && 'lg:order-last',
                 )}
               >
@@ -69,7 +67,7 @@ const groupedEntries = data.filter((item) => item.group)
                   {project.developmentFocus}
                 </Headline>
                 <p class="flex-1">{project.description}</p>
-                
+
                 <div class="flex gap-2 items-center">
                   <a
                     href={project.repositoryUrl}
@@ -94,7 +92,7 @@ const groupedEntries = data.filter((item) => item.group)
                   )}
                 </div>
               </div>
-              <div class="relative bg-base-muted-superlight rounded-box border-2 border-base-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight">
+              <div class="order-first lg:order-2 relative bg-base-muted-superlight rounded-box border-2 border-base-muted-light overflow-hidden shadow-lg shadow-primary-muted-superlight min-h-[30dvh]">
                 {project?.images && project.images.length > 0 && (
                   <a
                     href={project?.website || project?.repositoryUrl || '#'}
@@ -113,9 +111,16 @@ const groupedEntries = data.filter((item) => item.group)
                     />
                   </a>
                 )}
-                <ul class="absolute bottom-0 left-0 not-prose gap-2 flex flex-wrap justify-end w-full z-4 p-4">
+                <ul
+                  class={maMerge(
+                    i % 2
+                      ? 'lg:justify-end lg:right-0'
+                      : ' justify-start left-0',
+                    'absolute bottom-0 not-prose gap-2 flex flex-wrap-reverse lg:w-3/4 xl:w-1/2 z-4 p-3',
+                  )}
+                >
                   {project.technologies.map((tech) => (
-                    <li class="badge badge-accent badge-soft">
+                    <li class="badge badge-primary badge-soft badge-sm py-3">
                       {tech}
                     </li>
                   ))}
@@ -156,19 +161,29 @@ const groupedEntries = data.filter((item) => item.group)
         )}
       </div>
     </LayoutComponent>
-    <LayoutComponent
-      class="flex justify-between prose-headings:my-0 gap-14 my-20 border-y border-base-muted-light py-20 pixi-hitbox"
-    >
-      <H2Headline class=""
-        >More projects?
-        <span class="text-primary">See my Github.</span></H2Headline
+    <LayoutComponent class="my-20 pixi-hitbox">
+      <div
+        class="border-y border-base-muted-light py-20 flex justify-between prose-headings:my-0 gap-14 items-center"
       >
-      <a
-        href="https://github.com/richard-unterberg"
-        class="btn btn-xl btn-outline btn-primary"
-        ><GithubIcon class="size-7" />
-        Check my Github Profile</a
-      >
+        <div class="flex items-end">
+          <div>
+            <H2Headline class="leading-16"> More projects? </H2Headline>
+            <a
+              href="https://github.com/richard-unterberg"
+              class={maMerge(headlineStyle.h2, 'text-primary')}
+              >See my Github.</a
+            >
+          </div>
+          <MoveRight class="size-12 text-primary ml-3" />
+        </div>
+        <a
+          href="https://github.com/richard-unterberg"
+          class="btn btn-xl btn-outline btn-primary"
+        >
+          <GithubIcon class="size-7" />
+          My Github Profile</a
+        >
+      </div>
     </LayoutComponent>
     <LayoutComponent class="z-3">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 xl:gap-10">
@@ -184,8 +199,9 @@ const groupedEntries = data.filter((item) => item.group)
             variant="h4"
             class="pixi-hitbox inline-block font-normal! w-3/4"
           >
-            The bold idea becomes reality: An embedded audio workstation, which
-            can play and record multiple audio clips and sequence between them.<br>
+            The idea slowly becomes reality: An embedded audio workstation,
+            which can play, record and edit multiple audio clips and sequence
+            between them. Including a heavy DSP unit for beautiful effect chains<br>
           </Headline>
         </div>
         <img
@@ -194,20 +210,27 @@ const groupedEntries = data.filter((item) => item.group)
           loading="lazy"
           src={`/work/soup/soup-ai-model.png`}
           alt="Soup Station Model"
-          class="w-full h-auto rounded"
+          class="w-full h-auto rounded sticky top-100"
         >
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3">
         <div class="col-span-2">
-          Some text about the project. Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-          ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-          fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-          sunt in culpa qui officia deserunt mollit anim id est laborum.
           <div class="grid grid-cols-2 h-40 relative">
+            <p>
+              Some text about the project. Lorem ipsum dolor sit amet,
+              consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+              labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+              nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat.
+            </p>
+
+            <p>
+              Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+              cupidatat non proident, sunt in culpa qui officia deserunt mollit
+              anim id est laborum.
+            </p>
             <img
               width={500}
               height={300}

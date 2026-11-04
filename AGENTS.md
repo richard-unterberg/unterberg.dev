@@ -23,18 +23,18 @@ Use Astro components and plain TypeScript for the existing site; there is no Rea
 - Tailwind CSS 4, DaisyUI 5, Tailwind Typography, `@marmo/astro`, and `@lucide/astro`.
 - Biome handles formatting/linting; Knip checks unused code.
 
-| Command | Purpose |
-| --- | --- |
-| `pnpm install --frozen-lockfile` | Install the locked dependencies. |
-| `pnpm dev` | Start Astro development. |
-| `pnpm verify` | Run formatting, existing Node tests, Knip, linting, and Astro type checking, in that order. |
-| `pnpm test` | Run `tests/*.test.ts` with Node's test runner. |
-| `pnpm typecheck` | Run `astro check`. |
-| `pnpm check:knip` | Run Knip. |
-| `pnpm format` / `pnpm lint` | Format/lint with Biome; both commands write changes. |
-| `pnpm build` | Produce the static site in `dist/`. |
-| `pnpm preview` | Preview an existing production build. |
-| `pnpm prod` | Build and then preview. |
+| Command                          | Purpose                                                                                     |
+| -------------------------------- | ------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile` | Install the locked dependencies.                                                            |
+| `pnpm dev`                       | Start Astro development.                                                                    |
+| `pnpm verify`                    | Run formatting, existing Node tests, Knip, linting, and Astro type checking, in that order. |
+| `pnpm test`                      | Run `tests/*.test.ts` with Node's test runner.                                              |
+| `pnpm typecheck`                 | Run `astro check`.                                                                          |
+| `pnpm check:knip`                | Run Knip.                                                                                   |
+| `pnpm format` / `pnpm lint`      | Format/lint with Biome; both commands write changes.                                        |
+| `pnpm build`                     | Produce the static site in `dist/`.                                                         |
+| `pnpm preview`                   | Preview an existing production build.                                                       |
+| `pnpm prod`                      | Build and then preview.                                                                     |
 
 Run `pnpm verify` after implementation changes; also run `pnpm build` when changing page rendering, assets, styles, routing, or build integration. Inspect the diff afterward because verification can rewrite files. Avoid unrelated formatter churn. Documentation-only changes can be validated by checking their content, paths, and commands without rebuilding the application. Do not claim checks or browser smoke tests that were not performed.
 
@@ -44,26 +44,26 @@ The existing regression suite is part of `verify`; retain it. Add focused covera
 
 Astro uses `srcDir: '.'`: application sources live at the repository root, not under `src/`.
 
-| Location | Responsibility |
-| --- | --- |
-| `pages/` | Routes: home, work, contact, settings, and 404. Author page content and page-specific scene definitions here. |
-| `layouts/AppShell.astro` | HTML shell, global CSS, metadata, and header. |
-| `components/MetaHead.astro` | Canonical URLs, robots, local fonts, icons, and Astro `ClientRouter`. |
-| `layouts/PixiStage.astro` | Main content layout and inclusion of the persistent stage host. |
-| `components/` | Shared Astro UI, icons, and Marmo-based layout/headline components. |
-| `styles/global.css` | Tailwind/DaisyUI theme, typography, and global styling. |
-| `lib/pixiStage/Stage.astro` | Fixed, pointer-transparent, aria-hidden host with `transition:persist="emitter-stage"`; imports the client entry. |
-| `lib/pixiStage/client.ts` | Lazy runtime initialization, Astro navigation lifecycle, page/control binding, reduced-motion overrides, and teardown. |
-| `lib/pixiStage/runtime.ts` | Pixi application/assets, the single GSAP frame callback, pooled sprites, emission budgets, scroll planes, configuration updates, and disposal. |
-| `lib/pixiStage/config.ts` | `PixiConfig` definitions, `StageConfig`, defaults, units, ranges, and normalization. |
-| `lib/pixiStage/Controls.astro`, `controls.ts` | Settings markup and input/reset binding against the same configuration definitions. |
-| `lib/pixiStage/input.ts` | Pointer activity, idle ellipse, named-path selection, and zone ownership. |
-| `lib/pixiStage/pathPlayer.ts` | SVG path validation, viewport-scaled geometry/cache, playback, and motion samples. |
-| `lib/pixiStage/scene.ts`, `comets.ts` | Typed `PageScene`, random bowed paths, and the idle comet launch clock/player. |
-| `lib/pixiStage/zones.ts` | Zone membership discovery, cached bounds, and invalidation observers. |
-| `lib/pixiStage/clouds.ts` | Once-baked shader texture and pooled cloud particles. |
-| `public/` | Static fonts, sun/moon spritesheets, portfolio data, and project images. |
-| `tests/pixiStage.test.ts` | Configuration, path measurement, pointer interruption, and comet scheduling regressions. |
+| Location                                      | Responsibility                                                                                                                                 |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pages/`                                      | Routes: home, work, contact, settings, and 404. Author page content and page-specific scene definitions here.                                  |
+| `layouts/AppShell.astro`                      | HTML shell, global CSS, metadata, and header.                                                                                                  |
+| `components/MetaHead.astro`                   | Canonical URLs, robots, local fonts, icons, and Astro `ClientRouter`.                                                                          |
+| `layouts/PixiStage.astro`                     | Main content layout and inclusion of the persistent stage host.                                                                                |
+| `components/`                                 | Shared Astro UI, icons, and Marmo-based layout/headline components.                                                                            |
+| `styles/global.css`                           | Tailwind/DaisyUI theme, typography, and global styling.                                                                                        |
+| `lib/pixiStage/Stage.astro`                   | Fixed, pointer-transparent, aria-hidden host with `transition:persist="emitter-stage"`; imports the client entry.                              |
+| `lib/pixiStage/client.ts`                     | Lazy runtime initialization, Astro navigation lifecycle, page/control binding, reduced-motion overrides, and teardown.                         |
+| `lib/pixiStage/runtime.ts`                    | Pixi application/assets, the single GSAP frame callback, pooled sprites, emission budgets, scroll planes, configuration updates, and disposal. |
+| `lib/pixiStage/config.ts`                     | `PixiConfig` definitions, `StageConfig`, defaults, units, ranges, and normalization.                                                           |
+| `lib/pixiStage/Controls.astro`, `controls.ts` | Settings markup and input/reset binding against the same configuration definitions.                                                            |
+| `lib/pixiStage/input.ts`                      | Pointer activity, idle ellipse, named-path selection, and zone ownership.                                                                      |
+| `lib/pixiStage/pathPlayer.ts`                 | SVG path validation, viewport-scaled geometry/cache, playback, and motion samples.                                                             |
+| `lib/pixiStage/scene.ts`, `comets.ts`         | Typed `PageScene`, random bowed paths, and the idle comet launch clock/player.                                                                 |
+| `lib/pixiStage/zones.ts`                      | Zone membership discovery, cached bounds, and invalidation observers.                                                                          |
+| `lib/pixiStage/clouds.ts`                     | Once-baked shader texture and pooled cloud particles.                                                                                          |
+| `public/`                                     | Static fonts, sun/moon spritesheets, portfolio data, and project images.                                                                       |
+| `tests/pixiStage.test.ts`                     | Configuration, path measurement, pointer interruption, and comet scheduling regressions.                                                       |
 
 Import aliases are `@components/*`, `@layouts/*`, `@styles/*`, and `@lib/*` (see `tsconfig.json`). Follow Biome's two-space indentation, single-quoted TypeScript strings, and no unnecessary semicolons.
 

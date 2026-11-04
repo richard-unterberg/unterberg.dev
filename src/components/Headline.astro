@@ -4,6 +4,17 @@ import type { HTMLAttributes } from 'astro/types'
 
 type HeadlineElement = 'ultra' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p'
 
+export const headlineStyle = {
+  ultra: 'text-6xl xl:text-7xl font-black',
+  h1: 'text-5xl md:lg:text-6xl lg:text-7xl font-black',
+  h2: 'text-4xl md:text-5xl font-bold text-light',
+  h3: 'text-3xl text-gray font-bold',
+  h4: 'text-2xl text-light font-bold',
+  h5: 'text-xl font-medium text-gray',
+  h6: 'text-lg font-medium text-light',
+  p: 'text-base',
+}
+
 interface Props extends HTMLAttributes<'h1'> {
   as?: HeadlineElement
   variant?: HeadlineElement
@@ -20,16 +31,7 @@ export const createHeadlineComponent = (
       variants: {
         // Register `as` so Marmo consumes it instead of rendering an HTML attribute.
         as: {},
-        variant: {
-          ultra: 'text-6xl xl:text-7xl font-black',
-          h1: 'text-5xl md:lg:text-6xl lg:text-7xl font-black',
-          h2: 'text-4xl md:text-5xl font-bold text-light',
-          h3: 'text-3xl text-gray font-bold',
-          h4: 'text-2xl text-light font-bold',
-          h5: 'text-xl font-medium text-gray',
-          h6: 'text-lg font-medium text-light',
-          p: 'text-base',
-        },
+        variant: headlineStyle
       },
     })
 }
