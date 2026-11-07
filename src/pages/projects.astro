@@ -161,9 +161,9 @@ const groupedEntries = data.filter((item) => item.group)
         )}
       </div>
     </LayoutComponent>
-    <LayoutComponent class="my-20 pixi-hitbox">
+    <LayoutComponent class="mt-20 pixi-hitbox">
       <div
-        class="border-y border-base-muted-light py-20 flex justify-between prose-headings:my-0 gap-14 items-center"
+        class="border-t border-t-base-muted-light py-20 flex justify-between prose-headings:my-0 gap-14 items-center"
       >
         <div class="flex items-end">
           <div>
@@ -185,6 +185,29 @@ const groupedEntries = data.filter((item) => item.group)
         >
       </div>
     </LayoutComponent>
+    <div class="bg-primary-muted-superlight">
+      <LayoutComponent
+        $size="sm"
+        class="prose-headings:my-0 pt-16 mb-16 min-h-[40dvh] flex flex-col justify-center text-center"
+      >
+        <Headline variant="ultra" class="pixi-hitbox inline-block">
+          What about the business?
+        </Headline>
+        <Headline
+          as="p"
+          variant="h4"
+          class="pixi-hitbox inline-block font-normal!"
+        >
+          This website represents my personal work and projects. I am only
+          partially open to freelance work, collaborations and consulting
+          opportunities.
+          If you got a crazy idea or interesting projects (Modern Typescript backed Frameworks, Animation driven web products, Prototyping of software architecture) let me know, and we see what we can do.
+        </Headline>
+        <H2Headline></H2Headline>
+        <p></p>
+        <p>Interesting job opportunities are welcome at the moment</p>
+      </LayoutComponent>
+    </div>
     <LayoutComponent class="z-3">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 xl:gap-10">
         <div
@@ -210,13 +233,13 @@ const groupedEntries = data.filter((item) => item.group)
           loading="lazy"
           src={`/work/soup/soup-ai-model.png`}
           alt="Soup Station Model"
-          class="w-full h-auto rounded sticky top-100"
+          class="w-full h-auto rounded"
         >
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3">
         <div class="col-span-2">
-          <div class="grid grid-cols-2 h-40 relative">
+          <div class="grid grid-cols-2 relative">
             <p>
               Some text about the project. Lorem ipsum dolor sit amet,
               consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
@@ -251,24 +274,6 @@ const groupedEntries = data.filter((item) => item.group)
         </div>
       </div>
     </LayoutComponent>
-    <div class="bg-primary-muted-superlight">
-      <LayoutComponent
-        $size="sm"
-        class="prose-headings:my-0 pt-16 mb-16 min-h-[40dvh] flex flex-col justify-center text-center"
-      >
-        <Headline variant="ultra" class="pixi-hitbox inline-block">
-          What about the business?
-        </Headline>
-        <Headline
-          as="p"
-          variant="h4"
-          class="pixi-hitbox inline-block font-normal!"
-        >
-          This website represents my personal work and projects. I am only
-          partially open to freelance work, collaborations and consulting
-          opportunities.
-        </Headline>
-      </LayoutComponent>
-    </div>
+    
   </PixiStage>
 </AppShell>
